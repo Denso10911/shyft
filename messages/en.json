@@ -3,6 +3,13 @@
     "title": "Hello world!"
   },
 
+  "UserCard" :  {
+    "roles": {
+      "employee": "Employee",
+      "student": "Student"
+    }
+  },
+
   "ShiftCard": {
     "badges": {
       "cashRegister": "cash register",

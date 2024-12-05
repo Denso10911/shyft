@@ -3,6 +3,13 @@
     "title": "Hello fr!"
   },
 
+  "UserCard" :  {
+    "roles": {
+      "employee": "Employé",
+      "student": "Etudiant"
+    }
+  },
+
   "ShiftCard": {
     "badges": {
       "cashRegister": "Caisse",

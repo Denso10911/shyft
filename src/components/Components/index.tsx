@@ -2,9 +2,10 @@ import React from "react"
 import Badge from "@/components/Badge"
 import { COLORS } from "@/utiles/colors"
 import { ColorsEnum, ShiftVariant } from "@/types/enums"
-import { mockShiftData } from "@/utiles/dummyContents"
+import { mockShiftData, mockUsersData } from "@/utiles/dummyContents"
 import ShiftCard from "@/components/ShiftCard"
 import AbsenceCard from "@/components/AbsenceCard"
+import UserCard from "@/components/UserCard"
 
 type ColorKey = keyof typeof COLORS
 
@@ -33,14 +34,35 @@ const Components = () => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <h2 className="text-2xl font-bold">Shift Cards</h2>
+        <h2 className="text-2xl font-bold">Shift Card</h2>
         <div className="flex flex-col gap-2 rounded-[20px] border p-4">
-          <div className="grid grid-cols-4 gap-1">
+          <div className="flex gap-1">
             {mockShiftData.map((data, index) => {
               if (data.status === ShiftVariant.SHIFT) {
                 return <ShiftCard key={index} data={data} />
               }
-              return <AbsenceCard key={index} data={data} />
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl font-bold">Absence Card</h2>
+        <div className="flex flex-col gap-2 rounded-[20px] border p-4">
+          <div className="flex gap-1">
+            {mockShiftData.map((data, index) => {
+              if (data.status !== ShiftVariant.SHIFT) {
+                return <AbsenceCard key={index} data={data} />
+              }
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl font-bold">User Card</h2>
+        <div className="flex flex-col gap-2 rounded-[20px] border p-4">
+          <div className="grid grid-cols-4 gap-1">
+            {mockUsersData.map((data, index) => {
+              return <UserCard key={index} data={data} />
             })}
           </div>
         </div>
