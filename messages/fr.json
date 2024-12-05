@@ -1,5 +1,26 @@
 {
   "HomePage": {
     "title": "Hello fr!"
+  },
+
+  "ShiftCard": {
+    "badges": {
+      "cashRegister": "Caisse",
+      "closure": "Fermeture",
+      "truck": "Camion",
+      "opening": "Ouverture",
+      "vacation": "Congé",
+      "restoration": "Restauration",
+      "sickLeave": "Maladie"
+    },
+    "labels": {
+      "cashRegister": "C",
+      "closure": "F",
+      "truck": "CA",
+      "opening": "O",
+      "vacation": "C",
+      "restoration": "RCR",
+      "sickLeave": "MA"
+    }
   }
 }

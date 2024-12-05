@@ -9,43 +9,59 @@ import dayjs from "dayjs"
 import { getFormatedDuration } from "@/utiles/getFormatedDuration"
 import { getFormatedBreakPeriod } from "@/utiles/getFormatedBreakPeriod"
 import { getFormatedSalaryAmount } from "@/utiles/getFormatedSalaryAmount"
-import { FaRegClock } from "react-icons/fa"
-import { FaRegPauseCircle } from "react-icons/fa"
-import { FaRegMoneyBillAlt } from "react-icons/fa"
+import { FaRegClock, FaRegMoneyBillAlt, FaRegPauseCircle } from "react-icons/fa"
 import Checkbox from "@/components/Checkbox"
+import { useTranslations } from "next-intl"
+import { ShiftType } from "@/types/enums"
 
 type Props = {
   data: shiftInterface
 }
 
 const ShiftCard: React.FC<Props> = ({ data }) => {
+  const t = useTranslations("ShiftCard")
+
   const [isChecked, setIsChecked] = useState(false)
 
   const { start, end, salary, currency, shiftType, breakUnpaid } = data
 
+  const backgroundColor =
+    data.shiftType === ShiftType.CLOSURE ? "bg-[#f9faff]" : "bg-color-light-green"
+
   return (
-    <div className="relative flex cursor-grab flex-col gap-1 rounded-[10px] bg-lime-100 p-4">
+    <div
+      className={`${backgroundColor} relative flex h-max max-w-[250px] cursor-grab flex-col gap-1 overflow-hidden rounded-[10px] p-4`}
+    >
       <div className="absolute right-3 top-3">
         <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </div>
+
       <div className="flex font-bold">
         {dayjs(start).format("H:mm")}-{dayjs(end).format("H:mm")}
       </div>
-      <div className="text-color-dark-gray flex gap-2 text-sm">
+
+      <div className="flex gap-2 text-sm text-color-dark-gray">
         <p className="flex items-center gap-1">
           <FaRegClock /> {getFormatedDuration(start, end)}
         </p>
-        <p className="flex items-center gap-1">
-          <FaRegPauseCircle />
-          {getFormatedBreakPeriod(breakUnpaid)}
-        </p>
-        <p className="flex items-center gap-1">
-          <FaRegMoneyBillAlt /> {getFormatedSalaryAmount(+salary, currency)}
-        </p>
+
+        {breakUnpaid && (
+          <p className="flex items-center gap-1">
+            <FaRegPauseCircle />
+            {getFormatedBreakPeriod(breakUnpaid)}
+          </p>
+        )}
+
+        {salary && currency && (
+          <p className="flex items-center gap-1">
+            <FaRegMoneyBillAlt /> {getFormatedSalaryAmount(+salary, currency)}
+          </p>
+        )}
       </div>
+
       <ConditionalRender value={shiftType}>
         <Badge
-          label={shiftTypeLabels[shiftType]}
+          label={t(`badges.${shiftTypeLabels[shiftType]}`)}
           background={shiftTypeColors[shiftType]}
           width="full"
         />

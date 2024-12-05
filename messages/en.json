@@ -1,5 +1,26 @@
 {
   "HomePage": {
     "title": "Hello world!"
+  },
+
+  "ShiftCard": {
+    "badges": {
+      "cashRegister": "cash register",
+      "closure": "closure",
+      "truck": "truck",
+      "opening": "opening",
+      "vacation": "vacation",
+      "restoration": "restoration",
+      "sickLeave": "sick leave"
+    },
+    "labels": {
+      "cashRegister": "CR",
+      "closure": "C",
+      "truck": "T",
+      "opening": "O",
+      "vacation": "V",
+      "restoration": "RCR",
+      "sickLeave": "SL"
+    }
   }
 }

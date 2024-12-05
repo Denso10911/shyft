@@ -1,4 +1,4 @@
-import { ShiftType, UserRoles, UserStatus } from "@/types/enums"
+import { ShiftType, ShiftVariant, UserRoles } from "@/types/enums"
 
 export interface userInterface {
   id: number
@@ -16,13 +16,13 @@ export interface shiftInterface {
   attributes: string[]
   start: string
   end: string
-  breakPaid: string
-  breakUnpaid: string
+  breakPaid: string | null
+  breakUnpaid: string | null
   specialCode: string
   isShiftCompensated: boolean
-  currency: number
-  salary: string
+  currency: number | null
+  salary: string | null
   exceedsMaxHours: boolean
-  status?: UserStatus
+  status: ShiftVariant
   shiftType: ShiftType
 }

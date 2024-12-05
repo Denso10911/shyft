@@ -15,7 +15,7 @@ const colorVariants = {
   LIGHT_BLUE: "bg-color-light-blue text-color-black",
   LIGHT_GREEN: "bg-color-light-green text-color-black",
   LIGHT_RED: "bg-color-light-red text-color-black",
-  TRANSPARENT: "transparent text-color-light-gray",
+  TRANSPARENT: "transparent text-color-gray",
 }
 
 const widthVariants = {
@@ -32,7 +32,7 @@ type Props = {
 const Badge: React.FC<Props> = ({ label, background, width }) => {
   return (
     <div
-      className={`${colorVariants[background]} ${widthVariants[width]} rounded-[10px] px-2 py-1 capitalize`}
+      className={`${colorVariants[background]} ${widthVariants[width]} rounded-[8px] px-2 py-1 text-sm font-medium capitalize`}
     >
       {label}
     </div>

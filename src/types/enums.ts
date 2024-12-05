@@ -30,9 +30,7 @@ export enum UserRoles {
   STUDENT,
 }
 
-export enum UserStatus {
-  ACTIVE,
-  INACTIVE,
-  DISABLED,
-  PENDING,
+export enum ShiftVariant {
+  SHIFT,
+  ABSENCE,
 }
