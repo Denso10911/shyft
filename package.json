@@ -14,6 +14,7 @@
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
     "next": "14.2.19",
+    "next-intl": "^3.25.3",
     "react": "18.3.1",
     "react-dnd": "^16.0.1",
     "react-dom": "18.3.1",
