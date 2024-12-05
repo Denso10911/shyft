@@ -27,7 +27,7 @@ const AbsenceCard: React.FC<Props> = ({ data }) => {
 
   return (
     <div
-      className={`relative flex h-max max-w-[250px] cursor-grab flex-col gap-1 overflow-hidden rounded-[10px] bg-transparent p-4`}
+      className={`relative flex h-max min-w-[200px] max-w-[250px] cursor-grab flex-col gap-1 overflow-hidden rounded-[10px] bg-transparent p-4`}
     >
       {/*Card background*/}
       <div className="absolute left-[-20px] top-[-20px] z-[-1] flex h-[150%] w-[120%] justify-between gap-3 bg-[#f9faff]">
@@ -67,7 +67,7 @@ const AbsenceCard: React.FC<Props> = ({ data }) => {
         {t(`badges.${shiftTypeLabels[shiftType]}`)}
       </div>
       {start && end && (
-        <div className="flex  text-color-dark-gray">
+        <div className="flex text-sm text-color-dark-gray">
           {dayjs(start).format("H:mm")}-{dayjs(end).format("H:mm")}
         </div>
       )}
