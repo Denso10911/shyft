@@ -12,6 +12,7 @@ import { FaRegMoneyBillAlt } from "react-icons/fa"
 import Checkbox from "@/components/Checkbox"
 import { useTranslations } from "next-intl"
 import ConditionalRender from "@/components/ConditionalRender"
+import dayjs from "dayjs"
 
 type Props = {
   data: shiftInterface
@@ -65,6 +66,11 @@ const AbsenceCard: React.FC<Props> = ({ data }) => {
       <div className="text flex gap-2 text-lg capitalize text-color-dark-gray">
         {t(`badges.${shiftTypeLabels[shiftType]}`)}
       </div>
+      {start && end && (
+        <div className="flex  text-color-dark-gray">
+          {dayjs(start).format("H:mm")}-{dayjs(end).format("H:mm")}
+        </div>
+      )}
     </div>
   )
 }
