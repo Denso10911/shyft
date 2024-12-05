@@ -32,7 +32,7 @@ type Props = {
 const Badge: React.FC<Props> = ({ label, background, width }) => {
   return (
     <div
-      className={`${colorVariants[background]} ${widthVariants[width]} rounded-[10px] px-2 py-1 `}
+      className={`${colorVariants[background]} ${widthVariants[width]} rounded-[10px] px-2 py-1 capitalize`}
     >
       {label}
     </div>
