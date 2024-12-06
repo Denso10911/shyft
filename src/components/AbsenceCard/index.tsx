@@ -27,9 +27,9 @@ const AbsenceCard: React.FC<Props> = ({ data }) => {
 
   return (
     <div
-      className={`relative flex h-max min-w-[200px] max-w-[250px] cursor-grab flex-col gap-1 overflow-hidden rounded-[10px] bg-transparent p-4`}
+      className={`relative z-0 flex h-max w-full cursor-grab flex-col overflow-hidden rounded-[10px] bg-transparent px-4  py-2 shadow`}
     >
-      {/*Card background*/}
+      {/*card background*/}
       <div className="absolute left-[-20px] top-[-20px] z-[-1] flex h-[150%] w-[120%] justify-between gap-3 bg-[#f9faff]">
         {new Array(10).fill("").map((_, i) => {
           return <div key={i} className="h-full w-3 rotate-[30deg] bg-[#f1f2f7]" />

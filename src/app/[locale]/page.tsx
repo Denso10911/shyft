@@ -1,11 +1,9 @@
-import Components from "@/components/Components"
-import { useTranslations } from "next-intl"
+import Calendar from "@/components/Calendar"
+
 export default function Home() {
-  const t = useTranslations("HomePage")
   return (
-    <div className="p-20 font-[family-name:var(--font-geist-sans)] accent-neutral-400">
-      <h1>{t("title")}</h1>
-      <Components />
+    <div className="min-h-screen bg-[#f2f3f9] p-4 font-[family-name:var(--font-geist-sans)] accent-neutral-400">
+      <Calendar />
     </div>
   )
 }

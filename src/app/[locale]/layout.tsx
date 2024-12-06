@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { routing } from "@/i18n/routing"
 import localFont from "next/font/local"
 import "../../styles/globals.css"
+import { localeType } from "@/types/locale"
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -24,7 +25,7 @@ export default async function LocaleLayout({
   params: { locale: string }
 }) {
   // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale as localeType)) {
     notFound()
   }
 
@@ -34,7 +35,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>

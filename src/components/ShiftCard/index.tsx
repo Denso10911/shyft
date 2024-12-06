@@ -30,7 +30,7 @@ const ShiftCard: React.FC<Props> = ({ data }) => {
 
   return (
     <div
-      className={`${backgroundColor} relative flex h-max min-w-[200px] max-w-[250px] cursor-grab flex-col gap-1 overflow-hidden rounded-[10px] p-4`}
+      className={`${backgroundColor} relative flex h-max w-full flex-col gap-1 overflow-hidden rounded-[10px] px-4 py-2 shadow`}
     >
       <div className="absolute right-3 top-3">
         <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
