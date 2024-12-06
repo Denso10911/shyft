@@ -8,11 +8,11 @@ export interface userInterface {
   role: UserRoles
   hoursWorked: number
   profileImage: string | StaticImageData | null
-  shifts: shiftInterface[]
 }
 
 export interface shiftInterface {
   id: number
+  userId: number
   competencies: string[]
   attributes: string[]
   date: string
@@ -27,4 +27,8 @@ export interface shiftInterface {
   exceedsMaxHours: boolean
   status: ShiftVariant
   shiftType: ShiftType
+}
+
+export interface fullUserInfoInterface extends userInterface {
+  shifts: shiftInterface[]
 }

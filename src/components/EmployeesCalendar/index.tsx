@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import cn from "classnames"
 import { DateNumberT } from "@/types/calendar"
-import { mockUsersData } from "@/utiles/dummyContents"
+import { mockFullUserData } from "@/utiles/dummyContents"
 import UserCard from "@/components/UserCard"
 import dayjs from "dayjs"
 import { ShiftVariant } from "@/types/enums"
@@ -12,7 +12,6 @@ import Draggable from "@/components/Draggable"
 import {
   DndContext,
   DragEndEvent,
-  KeyboardSensor,
   MouseSensor,
   TouchSensor,
   useSensor,
@@ -20,11 +19,7 @@ import {
 } from "@dnd-kit/core"
 
 import weekday from "dayjs/plugin/weekday"
-import {
-  restrictToFirstScrollableAncestor,
-  restrictToParentElement,
-  restrictToWindowEdges,
-} from "@dnd-kit/modifiers"
+import { restrictToFirstScrollableAncestor, restrictToWindowEdges } from "@dnd-kit/modifiers"
 dayjs.extend(weekday)
 
 interface Props {
@@ -32,7 +27,7 @@ interface Props {
 }
 
 const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
-  const [users, setUsers] = useState(mockUsersData)
+  const [users, setUsers] = useState(mockFullUserData)
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
