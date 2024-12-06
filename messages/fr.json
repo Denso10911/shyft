@@ -29,5 +29,10 @@
       "restoration": "RCR",
       "sickLeave": "MA"
     }
+  },
+  "ShiftContextMenu": {
+    "copy": "Copier",
+    "edit": "Créer un contrat",
+    "delete": "Supprimer"
   }
 }

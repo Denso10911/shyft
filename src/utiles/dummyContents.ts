@@ -22,6 +22,24 @@ export const mockShiftData: shiftInterface[] = [
     status: 0,
     shiftType: 1,
   },
+  {
+    id: 2,
+    userId: 2,
+    competencies: [],
+    attributes: [],
+    date: "2024-12-04",
+    start: "2024-12-04T07:00:00",
+    end: "2024-12-04T15:20:00",
+    breakPaid: "0",
+    breakUnpaid: "30",
+    specialCode: "specialCode",
+    isShiftCompensated: true,
+    currency: 974,
+    salary: "123",
+    exceedsMaxHours: true,
+    status: 0,
+    shiftType: 1,
+  },
 ]
 
 export const mockUsersData: userInterface[] = [
@@ -76,7 +94,7 @@ export const mockFullUserData: fullUserInfoInterface[] = [
     role: 0,
     hoursWorked: 38,
     profileImage: avatar2,
-    shifts: [],
+    shifts: [mockShiftData[1]],
   },
   {
     id: 3,

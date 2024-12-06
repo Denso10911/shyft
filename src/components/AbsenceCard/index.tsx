@@ -16,17 +16,19 @@ import dayjs from "dayjs"
 
 type Props = {
   data: shiftInterface
+  onContextMenu: (e: React.MouseEvent, id: number) => void
 }
 
-const AbsenceCard: React.FC<Props> = ({ data }) => {
+const AbsenceCard: React.FC<Props> = ({ data, onContextMenu }) => {
   const t = useTranslations("ShiftCard")
 
   const [isChecked, setIsChecked] = useState(false)
 
-  const { start, end, salary, currency, shiftType, breakUnpaid } = data
+  const { start, end, salary, currency, shiftType, breakUnpaid, id } = data
 
   return (
     <div
+      onContextMenu={e => onContextMenu(e, id)}
       className={`relative z-0 flex h-max w-full cursor-grab flex-col overflow-hidden rounded-[10px] bg-transparent px-4  py-2 shadow`}
     >
       {/*card background*/}

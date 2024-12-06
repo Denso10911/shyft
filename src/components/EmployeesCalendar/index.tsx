@@ -20,6 +20,10 @@ import {
 
 import weekday from "dayjs/plugin/weekday"
 import { restrictToFirstScrollableAncestor, restrictToWindowEdges } from "@dnd-kit/modifiers"
+import ContextMenuContainer from "@/components/ContextMenuContainer"
+import useCalendarShiftSensors from "@/hooks/useCalendarShiftSensors"
+import useCalendarShiftContextMenu from "@/hooks/useCalendarShiftContextMenu"
+import ShiftContextMenu from "@/components/ShiftContextMenu"
 dayjs.extend(weekday)
 
 interface Props {
@@ -29,22 +33,10 @@ interface Props {
 const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
   const [users, setUsers] = useState(mockFullUserData)
 
-  const mouseSensor = useSensor(MouseSensor, {
-    activationConstraint: {
-      distance: 10,
-    },
-  })
+  const sensors = useCalendarShiftSensors()
+  const { contextMenu, handleRightClick, handleCloseContextMenu } = useCalendarShiftContextMenu()
 
-  const touchSensor = useSensor(TouchSensor, {
-    activationConstraint: {
-      delay: 250,
-      tolerance: 5,
-    },
-  })
-
-  const sensors = useSensors(mouseSensor, touchSensor)
-
-  function handleDragEnd(event: DragEndEvent) {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
     const activeElementId = active.id as string
     const overElementId = over?.id as string
@@ -113,88 +105,99 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
   }
 
   return (
-    <div
-      data-component="EmployeesCalendar"
-      className={cn("relative max-h-[calc(100vh-110px)] overflow-auto rounded-md bg-color-white")}
-    >
-      <DndContext
-        onDragEnd={handleDragEnd}
-        sensors={sensors}
-        modifiers={[restrictToFirstScrollableAncestor, restrictToWindowEdges]}
+    <>
+      <div
+        data-component="EmployeesCalendar"
+        className={cn("relative max-h-[calc(100vh-110px)] overflow-auto rounded-md bg-color-white")}
       >
-        <div className="relative grid grid-cols-[220px_repeat(7,_1fr)]">
-          <div
-            className={cn(
-              "sticky left-0 z-20 flex items-center justify-center border-b border-r border-color-light-blue bg-[#f9f9f9] py-4 "
-            )}
-          >
-            <div className="sticky left-0 w-full px-4">Search</div>
-          </div>
-          {calendar.length > 0 &&
-            calendar.map((el, i) => {
-              const calendarDate = `${el.year}-${el.month}-${el.day}`
-              const dayOfWeek = dayjs(calendarDate).format("ddd")
-              const isToday = dayjs(calendarDate).isSame(dayjs(), "day") // Check if the date is today
-
-              return (
-                <div
-                  className={cn(
-                    "flex min-w-[240px] shrink-0 cursor-pointer flex-col items-center justify-center border-b border-r border-color-light-blue ",
-                    isToday ? "bg-[#e3e6f1]" : "bg-[#f9f9f9]"
-                  )}
-                  key={i}
-                >
-                  <div className="font-bold capitalize">{`${dayOfWeek.replace(".", "")} ${el.day}`}</div>
-                </div>
-              )
-            })}
-        </div>
-
-        {users.map(user => (
-          <div
-            key={user.id}
-            className="grid min-h-[130px] min-w-[240px] shrink-0 grid-cols-[220px_repeat(7,_1fr)]"
-          >
+        <DndContext
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+          modifiers={[restrictToFirstScrollableAncestor, restrictToWindowEdges]}
+        >
+          <div className="relative grid grid-cols-[220px_repeat(7,_1fr)]">
             <div
               className={cn(
-                "border-color-border-gray_dark sticky left-0 z-20 flex shrink-0 items-center border-b border-r bg-[#f9f9f9] px-5"
+                "sticky left-0 z-20 flex items-center justify-center border-b border-r border-color-light-blue bg-[#f9f9f9] py-4 "
               )}
             >
-              <UserCard data={user} />
+              <div className="sticky left-0 w-full px-4">Search</div>
             </div>
-            {calendar.map(date => {
-              const calendarDate = `${date.year}-${date.month}-${date.day}`
-              const userShifts = user.shifts.filter(
-                shift => dayjs(shift.date).format("YYYY-MM-DD") === calendarDate
-              )
+            {calendar.length > 0 &&
+              calendar.map((el, i) => {
+                const calendarDate = `${el.year}-${el.month}-${el.day}`
+                const dayOfWeek = dayjs(calendarDate).format("ddd")
+                const isToday = dayjs(calendarDate).isSame(dayjs(), "day") // Check if the date is today
 
-              return (
-                <Droppable
-                  key={`${user.id}/${calendarDate}`}
-                  id={`${user.id}/${calendarDate}`}
-                  className={"flex min-w-[240px] flex-col gap-2 border-b border-r p-4"}
-                >
-                  {userShifts.map(shift => {
-                    if (shift.status !== ShiftVariant.SHIFT) {
+                return (
+                  <div
+                    className={cn(
+                      "flex min-w-[240px] shrink-0 cursor-pointer flex-col items-center justify-center border-b border-r border-color-light-blue ",
+                      isToday ? "bg-[#e3e6f1]" : "bg-[#f9f9f9]"
+                    )}
+                    key={i}
+                  >
+                    <div className="font-bold capitalize">{`${dayOfWeek.replace(".", "")} ${el.day}`}</div>
+                  </div>
+                )
+              })}
+          </div>
+
+          {users.map(user => (
+            <div
+              key={user.id}
+              className="grid min-h-[130px] min-w-[240px] shrink-0 grid-cols-[220px_repeat(7,_1fr)]"
+            >
+              <div
+                className={cn(
+                  "border-color-border-gray_dark sticky left-0 z-20 flex shrink-0 items-center border-b border-r bg-[#f9f9f9] px-5"
+                )}
+              >
+                <UserCard data={user} />
+              </div>
+              {calendar.map(date => {
+                const calendarDate = `${date.year}-${date.month}-${date.day}`
+                const userShifts = user.shifts.filter(
+                  shift => dayjs(shift.date).format("YYYY-MM-DD") === calendarDate
+                )
+
+                return (
+                  <Droppable
+                    key={`${user.id}/${calendarDate}`}
+                    id={`${user.id}/${calendarDate}`}
+                    className={"flex min-w-[240px] flex-col gap-2 border-b border-r p-4"}
+                  >
+                    {userShifts.map(shift => {
+                      if (shift.status !== ShiftVariant.SHIFT) {
+                        return (
+                          <Draggable id={`${user.id}/${shift.id}`} key={`${user.id}/${shift.id}`}>
+                            <AbsenceCard data={shift} onContextMenu={handleRightClick} />
+                          </Draggable>
+                        )
+                      }
                       return (
                         <Draggable id={`${user.id}/${shift.id}`} key={`${user.id}/${shift.id}`}>
-                          <AbsenceCard key={shift.id} data={shift} />
+                          <ShiftCard data={shift} onContextMenu={handleRightClick} />
                         </Draggable>
                       )
-                    }
-                    return (
-                      <Draggable id={`${user.id}/${shift.id}`} key={`${user.id}/${shift.id}`}>
-                        <ShiftCard data={shift} />
-                      </Draggable>
-                    )
-                  })}
-                </Droppable>
-              )
-            })}
-          </div>
-        ))}
-      </DndContext>
-    </div>
+                    })}
+                  </Droppable>
+                )
+              })}
+            </div>
+          ))}
+        </DndContext>
+      </div>
+      {contextMenu.visible && (
+        <ContextMenuContainer
+          top={contextMenu.y}
+          left={contextMenu.x}
+          handleClose={handleCloseContextMenu}
+        >
+          <ShiftContextMenu />
+        </ContextMenuContainer>
+      )}
+    </>
   )
 }
 export default EmployeesCalendar
