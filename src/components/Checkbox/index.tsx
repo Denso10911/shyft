@@ -27,7 +27,7 @@ const Checkbox: React.FC<Props> = ({ isChecked, setIsChecked, label }) => {
     >
       <div
         className={cn(
-          "bg-color-white flex shrink-0 rounded border shadow",
+          "flex shrink-0 rounded border bg-color-white shadow",
           isChecked ? checkboxConfig.checked.border : checkboxConfig.unchecked.border
         )}
       >

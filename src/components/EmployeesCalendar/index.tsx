@@ -9,9 +9,22 @@ import AbsenceCard from "@/components/AbsenceCard"
 import ShiftCard from "@/components/ShiftCard"
 import Droppable from "@/components/Droppable"
 import Draggable from "@/components/Draggable"
-import { DndContext, DragEndEvent } from "@dnd-kit/core"
+import {
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core"
 
 import weekday from "dayjs/plugin/weekday"
+import {
+  restrictToFirstScrollableAncestor,
+  restrictToParentElement,
+  restrictToWindowEdges,
+} from "@dnd-kit/modifiers"
 dayjs.extend(weekday)
 
 interface Props {
@@ -21,10 +34,27 @@ interface Props {
 const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
   const [users, setUsers] = useState(mockUsersData)
 
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  })
+
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5,
+    },
+  })
+
+  const sensors = useSensors(mouseSensor, touchSensor)
+
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
     const activeElementId = active.id as string
     const overElementId = over?.id as string
+
+    if (!activeElementId || !overElementId) return
 
     const [activeUserId, activeShiftId] = activeElementId.split("/")
     const [overUserId, overDate] = overElementId.split("/")
@@ -88,10 +118,14 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <div
-        data-component="EmployeesCalendar"
-        className={cn("relative overflow-auto rounded-md bg-color-white")}
+    <div
+      data-component="EmployeesCalendar"
+      className={cn("relative max-h-[calc(100vh-110px)] overflow-auto rounded-md bg-color-white")}
+    >
+      <DndContext
+        onDragEnd={handleDragEnd}
+        sensors={sensors}
+        modifiers={[restrictToFirstScrollableAncestor, restrictToWindowEdges]}
       >
         <div className="relative grid grid-cols-[220px_repeat(7,_1fr)]">
           <div
@@ -164,8 +198,8 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
             })}
           </div>
         ))}
-      </div>
-    </DndContext>
+      </DndContext>
+    </div>
   )
 }
 export default EmployeesCalendar
