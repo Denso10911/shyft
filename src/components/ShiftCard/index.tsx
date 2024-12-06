@@ -16,7 +16,7 @@ import { ShiftType } from "@/types/enums"
 
 type Props = {
   data: shiftInterface
-  onContextMenu: (e: React.MouseEvent, id: number) => void
+  onContextMenu?: (e: React.MouseEvent, id: number) => void
 }
 
 const ShiftCard: React.FC<Props> = ({ data, onContextMenu }) => {
@@ -31,7 +31,7 @@ const ShiftCard: React.FC<Props> = ({ data, onContextMenu }) => {
 
   return (
     <div
-      onContextMenu={e => onContextMenu(e, id)}
+      onContextMenu={e => onContextMenu && onContextMenu(e, id)}
       className={`${backgroundColor} relative flex h-max w-full origin-center flex-col  gap-1 rounded-[10px] px-4 py-2 shadow transition hover:scale-105`}
     >
       <div className="absolute right-3 top-3">

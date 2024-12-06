@@ -16,7 +16,7 @@ import dayjs from "dayjs"
 
 type Props = {
   data: shiftInterface
-  onContextMenu: (e: React.MouseEvent, id: number) => void
+  onContextMenu?: (e: React.MouseEvent, id: number) => void
 }
 
 const AbsenceCard: React.FC<Props> = ({ data, onContextMenu }) => {
@@ -28,7 +28,7 @@ const AbsenceCard: React.FC<Props> = ({ data, onContextMenu }) => {
 
   return (
     <div
-      onContextMenu={e => onContextMenu(e, id)}
+      onContextMenu={e => onContextMenu && onContextMenu(e, id)}
       className={`relative z-0 flex h-max w-full cursor-grab flex-col overflow-hidden rounded-[10px] bg-transparent px-4  py-2 shadow`}
     >
       {/*card background*/}

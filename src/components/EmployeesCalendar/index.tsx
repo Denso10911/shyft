@@ -9,14 +9,7 @@ import AbsenceCard from "@/components/AbsenceCard"
 import ShiftCard from "@/components/ShiftCard"
 import Droppable from "@/components/Droppable"
 import Draggable from "@/components/Draggable"
-import {
-  DndContext,
-  DragEndEvent,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core"
+import { DndContext, DragEndEvent } from "@dnd-kit/core"
 
 import weekday from "dayjs/plugin/weekday"
 import { restrictToFirstScrollableAncestor, restrictToWindowEdges } from "@dnd-kit/modifiers"
