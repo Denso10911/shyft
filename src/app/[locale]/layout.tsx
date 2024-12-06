@@ -5,7 +5,6 @@ import { routing } from "@/i18n/routing"
 import localFont from "next/font/local"
 import "../../styles/globals.css"
 import { localeType } from "@/types/locale"
-import StoreProvider from "@/app/StoreProvider"
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -37,9 +36,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <StoreProvider>
-          <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
-        </StoreProvider>
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   )
