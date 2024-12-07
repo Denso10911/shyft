@@ -1,8 +1,10 @@
-import Calendar from "@/components/Calendar"
-import { getQueryClient } from "@/app/get-query-client"
-import { getUsersOptions } from "@/api/users"
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query"
+
+import Calendar from "@/components/Calendar"
+
 import { getShiftsOptions } from "@/api/shifts"
+import { getUsersOptions } from "@/api/users"
+import { getQueryClient } from "@/app/get-query-client"
 
 export default function Home() {
   const queryClient = getQueryClient()

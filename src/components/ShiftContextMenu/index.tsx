@@ -2,8 +2,8 @@ import React from "react"
 import { FaRegCopy } from "react-icons/fa"
 import { FaAlignJustify } from "react-icons/fa"
 import { FaTimesCircle } from "react-icons/fa"
-import { useTranslations } from "next-intl"
 import cn from "classnames"
+import { useTranslations } from "next-intl"
 
 const ShiftContextMenu = () => {
   const t = useTranslations("ShiftContextMenu")

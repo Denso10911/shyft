@@ -1,4 +1,5 @@
 import React from "react"
+
 import { COLORS } from "@/utiles/colors"
 
 const colorVariants = {

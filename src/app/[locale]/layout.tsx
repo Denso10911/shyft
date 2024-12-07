@@ -1,12 +1,15 @@
+import localFont from "next/font/local"
+import { notFound } from "next/navigation"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
-import { notFound } from "next/navigation"
-import { routing } from "@/i18n/routing"
-import localFont from "next/font/local"
+
+import Providers from "@/app/[locale]/proviers"
+
 import "../../styles/globals.css"
 import "react-toastify/dist/ReactToastify.css"
+
+import { routing } from "@/i18n/routing"
 import { localeType } from "@/types/types"
-import Providers from "@/app/[locale]/proviers"
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",

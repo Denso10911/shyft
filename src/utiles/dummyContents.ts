@@ -1,7 +1,8 @@
-import { shiftInterface, userInterface } from "@/types"
 import avatar1 from "../../public/avatars/avatar1.png"
 import avatar2 from "../../public/avatars/avatar2.png"
 import avatar3 from "../../public/avatars/avatar3.png"
+
+import { shiftInterface, userInterface } from "@/types"
 import { ShiftTimingOptions, ShiftType, UserRoles } from "@/types/enums"
 
 export const mockShiftData: shiftInterface[] = [

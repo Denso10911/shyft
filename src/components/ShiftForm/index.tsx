@@ -1,25 +1,28 @@
-import { shiftInterface, userInterface } from "@/types"
-import { useForm, Controller } from "react-hook-form"
 import { useEffect, useState } from "react"
+import { Controller, useForm } from "react-hook-form"
 import Select from "react-select"
-import { mockUserOptions, mockUsersData } from "@/utiles/dummyContents"
-import { ShiftTimingOptions, ShiftVariant } from "@/types/enums"
 import TimeField from "react-simple-timefield"
-import Checkbox from "../Checkbox"
 import dayjs from "dayjs"
+import { useTranslations } from "next-intl"
+
+import Button from "@/components/Button"
+import InputLabelWrapper from "@/components/InputLabelWrapper"
+
+import Checkbox from "../Checkbox"
+
+import { shiftInterface, userInterface } from "@/types"
+import { ShiftTimingOptions, ShiftVariant } from "@/types/enums"
+import { mockUserOptions, mockUsersData } from "@/utiles/dummyContents"
 import {
-  shiftTypeOptions,
-  competenciesOptions,
   attributesOptions,
+  competenciesOptions,
   shiftTimingOptions,
+  shiftTypeOptions,
   specialCodeOptions,
 } from "@/utiles/dummyContents"
-import Button from "@/components/Button"
-import { useTranslations } from "next-intl"
-import InputLabelWrapper from "@/components/InputLabelWrapper"
-import { selectStyles, timePickerStyles } from "@/utiles/styles"
-import { getMinutesToHHmm } from "@/utiles/getMinutesToHHmm"
 import { getHHmmToMinutes } from "@/utiles/getHHmmToMinutes"
+import { getMinutesToHHmm } from "@/utiles/getMinutesToHHmm"
+import { selectStyles, timePickerStyles } from "@/utiles/styles"
 
 type Props = {
   data?: shiftInterface

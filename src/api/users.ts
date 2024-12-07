@@ -1,5 +1,6 @@
-import { BASE_URL } from "@/api/index"
 import { queryOptions } from "@tanstack/react-query"
+
+import { BASE_URL } from "@/api/index"
 import { mockUsersData } from "@/utiles/dummyContents"
 
 export const usersApi = {

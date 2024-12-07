@@ -1,11 +1,13 @@
 import React from "react"
-import Badge from "@/components/Badge"
-import { COLORS } from "@/utiles/colors"
-import { ColorsEnum, ShiftVariant } from "@/types/enums"
-import { mockShiftData, mockUsersData } from "@/utiles/dummyContents"
-import ShiftCard from "@/components/ShiftCard"
+
 import AbsenceCard from "@/components/AbsenceCard"
+import Badge from "@/components/Badge"
+import ShiftCard from "@/components/ShiftCard"
 import UserCard from "@/components/UserCard"
+
+import { ColorsEnum, ShiftVariant } from "@/types/enums"
+import { COLORS } from "@/utiles/colors"
+import { mockShiftData, mockUsersData } from "@/utiles/dummyContents"
 
 type ColorKey = keyof typeof COLORS
 

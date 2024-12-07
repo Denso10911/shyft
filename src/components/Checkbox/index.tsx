@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react"
-import cn from "classnames"
 import { FaCheck } from "react-icons/fa"
+import cn from "classnames"
 
 interface Props {
   isChecked: boolean

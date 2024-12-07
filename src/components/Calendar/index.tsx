@@ -2,14 +2,15 @@
 
 import { useState } from "react"
 import dayjs from "dayjs"
-
 import { useLocale } from "next-intl"
 
 import "dayjs/locale/fr"
-import EmployeesCalendar from "@/components/EmployeesCalendar"
-import { DateNumberT } from "@/types/calendar"
+
 import AsideModal from "@/components/AsideModal"
 import CalendarMenu from "@/components/CalendarMenu"
+import EmployeesCalendar from "@/components/EmployeesCalendar"
+
+import { DateNumberT } from "@/types/calendar"
 
 const Calendar = () => {
   const locale = useLocale()

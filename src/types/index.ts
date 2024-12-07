@@ -1,5 +1,6 @@
-import { ShiftType, ShiftVariant, UserRoles } from "@/types/enums"
 import { StaticImageData } from "next/image"
+
+import { ShiftType, ShiftVariant, UserRoles } from "@/types/enums"
 
 export interface userInterface {
   id: string

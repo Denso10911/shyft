@@ -1,17 +1,19 @@
 "use client"
 
 import React, { useState } from "react"
-import { shiftInterface } from "@/types"
-import Badge from "@/components/Badge"
-import { shiftTypeColors, shiftTypeLabels } from "@/utiles/shiftTypeData"
-import dayjs from "dayjs"
-import { getFormatedDuration } from "@/utiles/getFormatedDuration"
-import { getFormatedBreakPeriod } from "@/utiles/getFormatedBreakPeriod"
-import { getFormatedSalaryAmount } from "@/utiles/getFormatedSalaryAmount"
 import { FaRegClock, FaRegMoneyBillAlt, FaRegPauseCircle } from "react-icons/fa"
-import Checkbox from "@/components/Checkbox"
+import dayjs from "dayjs"
 import { useTranslations } from "next-intl"
+
+import Badge from "@/components/Badge"
+import Checkbox from "@/components/Checkbox"
+
+import { shiftInterface } from "@/types"
 import { ShiftType } from "@/types/enums"
+import { getFormatedBreakPeriod } from "@/utiles/getFormatedBreakPeriod"
+import { getFormatedDuration } from "@/utiles/getFormatedDuration"
+import { getFormatedSalaryAmount } from "@/utiles/getFormatedSalaryAmount"
+import { shiftTypeColors, shiftTypeLabels } from "@/utiles/shiftTypeData"
 
 type Props = {
   data: shiftInterface

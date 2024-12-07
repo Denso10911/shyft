@@ -1,10 +1,11 @@
 "use client"
-import { shiftInterface } from "@/types"
 import React from "react"
+import { IoMdClose } from "react-icons/io"
 import Modal from "react-modal"
+
 import ShiftForm from "../ShiftForm"
 
-import { IoMdClose } from "react-icons/io"
+import { shiftInterface } from "@/types"
 import { customModalStyles } from "@/utiles/styles"
 
 Modal.setAppElement("body")

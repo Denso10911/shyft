@@ -1,8 +1,10 @@
 import React from "react"
-import { userInterface } from "@/types"
-import Avatar from "@/components/Avatar"
-import { userRoleName } from "@/utiles/UserData"
 import { useTranslations } from "next-intl"
+
+import Avatar from "@/components/Avatar"
+
+import { userInterface } from "@/types"
+import { userRoleName } from "@/utiles/UserData"
 
 type Props = {
   data: userInterface
