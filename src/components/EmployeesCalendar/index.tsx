@@ -37,8 +37,6 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
 
   const { data: usersList } = useSuspenseQuery<userInterface[]>(getUsersOptions())
   const { data: shiftsList } = useSuspenseQuery<shiftInterface[]>(getShiftsOptions())
-  console.log(usersList, "usersList")
-  console.log(shiftsList, "shiftsList")
 
   const mutation = useMutation({
     mutationFn: (payload: updateShiftPayloadType) => shiftsApi.updateShiftOwnerById(payload),
@@ -70,7 +68,9 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
       },
     }
 
-    mutation.mutate(payload)
+    if (process.env.NEXT_PUBLIC_USE_MOCK !== "true") {
+      mutation.mutate(payload)
+    }
 
     setUsersListWithShifts(prevUsers => {
       return prevUsers.map(user => {

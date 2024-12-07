@@ -1,8 +1,13 @@
 import { BASE_URL } from "@/api/index"
 import { queryOptions } from "@tanstack/react-query"
+import { mockUsersData } from "@/utiles/dummyContents"
 
 export const usersApi = {
   getUsers: async () => {
+    if (process.env.NEXT_PUBLIC_USE_MOCK === "true") {
+      return mockUsersData
+    }
+
     const response = await fetch(`${BASE_URL}/users`)
     return response.json()
   },
