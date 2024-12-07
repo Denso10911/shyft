@@ -1,10 +1,8 @@
 "use client"
 
-import { IoIosArrowBack } from "react-icons/io"
-import { IoIosArrowForward } from "react-icons/io"
-import { useEffect, useState } from "react"
-import dayjs, { Dayjs } from "dayjs"
-import isoWeek from "dayjs/plugin/isoWeek"
+import { useState } from "react"
+import dayjs from "dayjs"
+
 import { useLocale } from "next-intl"
 
 import "dayjs/locale/fr"
@@ -12,7 +10,6 @@ import EmployeesCalendar from "@/components/EmployeesCalendar"
 import { DateNumberT } from "@/types/calendar"
 import AsideModal from "@/components/AsideModal"
 import CalendarMenu from "@/components/CalendarMenu"
-dayjs.extend(isoWeek)
 
 const Calendar = () => {
   const locale = useLocale()
@@ -26,9 +23,9 @@ const Calendar = () => {
     setIsModalOpen(false)
   }
 
-  const modalOpenHandler = () => {
-    setIsModalOpen(true)
-  }
+  // const modalOpenHandler = () => {
+  //   setIsModalOpen(true)
+  // }
 
   return (
     <div
