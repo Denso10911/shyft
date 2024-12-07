@@ -39,7 +39,7 @@ const Components = () => {
           <div className="flex gap-1">
             {mockShiftData.map((data, index) => {
               if (data.status === ShiftVariant.SHIFT) {
-                return <ShiftCard key={index} data={data} />
+                return <ShiftCard key={index} data={data} currency={840} salary={"123"} />
               }
             })}
           </div>
@@ -51,7 +51,7 @@ const Components = () => {
           <div className="flex gap-1">
             {mockShiftData.map((data, index) => {
               if (data.status !== ShiftVariant.SHIFT) {
-                return <AbsenceCard key={index} data={data} />
+                return <AbsenceCard key={index} data={data} currency={840} salary={"123"} />
               }
             })}
           </div>

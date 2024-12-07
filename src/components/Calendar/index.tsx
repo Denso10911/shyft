@@ -13,6 +13,7 @@ import CalendarMenu from "@/components/CalendarMenu"
 
 const Calendar = () => {
   const locale = useLocale()
+
   dayjs.locale(locale)
 
   const [calendar, setCalendar] = useState<DateNumberT[]>([])
@@ -33,7 +34,8 @@ const Calendar = () => {
       className="flex h-full flex-1 flex-col gap-6 rounded bg-color-white shadow"
     >
       <CalendarMenu setCalendar={setCalendar} />
-      <EmployeesCalendar calendar={calendar} />
+
+      {!!calendar.length && <EmployeesCalendar calendar={calendar} />}
 
       <AsideModal isOpen={isModalOpen} closeHandler={modalCloseHandler} type="newShift" />
     </div>

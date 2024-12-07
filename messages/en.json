@@ -3,6 +3,9 @@
     "title": "Hello world!"
   },
 
+  "EmployeesCalendar": {
+    "mutationError": "Something went wrong, please try again later."
+  },
   "UserCard": {
     "roles": {
       "employee": "Employee",

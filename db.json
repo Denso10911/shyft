@@ -1,56 +1,78 @@
 {
   "users": [
     {
-      "id": 1,
-      "firstName": "John",
-      "lastName": "Doe",
+      "id": "1",
+      "firstName": "Alice",
+      "lastName": "Smith",
       "role": 0,
-      "hoursWorked": 24,
-      "profileImage": null
+      "hoursWorked": 90,
+      "profileImage": null,
+      "currency": 974,
+      "salary": "123"
     },
     {
-      "id": 2,
-      "firstName": "Sara",
-      "lastName": "Root",
+      "id": "2",
+      "firstName": "Bob",
+      "lastName": "Johnson",
+      "role": 1,
+      "hoursWorked": 20,
+      "profileImage": null,
+      "currency": 974,
+      "salary": "123"
+    },
+    {
+      "id": "3",
+      "firstName": "Charlie",
+      "lastName": "Williams",
       "role": 0,
-      "hoursWorked": 38,
-      "profileImage": null
+      "hoursWorked": 35,
+      "profileImage": null,
+      "currency": 974,
+      "salary": "123"
     },
     {
-      "id": 3,
-      "firstName": "Lera",
-      "lastName": "Charlton",
+      "id": "4",
+      "firstName": "Diana",
+      "lastName": "Brown",
       "role": 1,
-      "hoursWorked": 38,
-      "profileImage": null
-    },
-    {
-      "id": 4,
-      "firstName": "Ben",
-      "lastName": "Doe",
-      "role": 1,
-      "hoursWorked": 38,
-      "profileImage": null
+      "hoursWorked": 60,
+      "profileImage": null,
+      "currency": 974,
+      "salary": "123"
     }
   ],
   "shifts": [
     {
-      "id": 1,
-      "userId": 1,
+      "id": "1",
+      "userId": "2",
       "competencies": [],
       "attributes": [],
       "date": "2024-12-04",
       "start": "2024-12-04T07:00:00",
       "end": "2024-12-04T15:20:00",
-      "breakPaid": "0",
-      "breakUnpaid": "30",
+      "breakPaid": 0,
+      "breakUnpaid": 30,
       "specialCode": "specialCode",
       "isShiftCompensated": true,
-      "currency": 974,
-      "salary": "123",
-      "exceedsMaxHours": true,
       "status": 0,
-      "shiftType": 1
+      "shiftType": 1,
+      "shiftLength": 0
+    },
+    {
+      "id": "2",
+      "userId": "3",
+      "competencies": [],
+      "attributes": [],
+      "date": "2024-12-03",
+      "start": "2024-12-04T07:00:00",
+      "end": "2024-12-04T15:20:00",
+      "breakPaid": 0,
+      "breakUnpaid": 30,
+      "specialCode": "specialCode",
+      "isShiftCompensated": true,
+      "status": 0,
+      "shiftType": 1,
+      "shiftLength": 0
     }
   ]
 }

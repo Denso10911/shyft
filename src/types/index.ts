@@ -2,7 +2,7 @@ import { ShiftType, ShiftVariant, UserRoles } from "@/types/enums"
 import { StaticImageData } from "next/image"
 
 export interface userInterface {
-  id: number
+  id: string
   firstName: string
   lastName: string
   role: UserRoles
@@ -13,8 +13,8 @@ export interface userInterface {
 }
 
 export interface shiftInterface {
-  id: number
-  userId: number | null
+  id: string
+  userId: string
   competencies: string[]
   attributes: string[]
   date: string

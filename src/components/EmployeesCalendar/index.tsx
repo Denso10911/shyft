@@ -1,7 +1,6 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import cn from "classnames"
 import { DateNumberT } from "@/types/calendar"
-import { mockFullUserData } from "@/utiles/dummyContents"
 import UserCard from "@/components/UserCard"
 import dayjs from "dayjs"
 import { ShiftVariant } from "@/types/enums"
@@ -17,6 +16,13 @@ import ContextMenuContainer from "@/components/ContextMenuContainer"
 import useCalendarShiftSensors from "@/hooks/useCalendarShiftSensors"
 import useCalendarShiftContextMenu from "@/hooks/useCalendarShiftContextMenu"
 import ShiftContextMenu from "@/components/ShiftContextMenu"
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
+import { getUsersOptions } from "@/api/users"
+import { getShiftsOptions, shiftsApi } from "@/api/shifts"
+import { fullUserInfoInterface, shiftInterface, userInterface } from "@/types"
+import { updateShiftPayloadType } from "@/api/types"
+import { toast } from "react-toastify"
+import { useTranslations } from "next-intl"
 dayjs.extend(weekday)
 
 interface Props {
@@ -24,7 +30,24 @@ interface Props {
 }
 
 const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
-  const [users, setUsers] = useState(mockFullUserData)
+  const t = useTranslations("EmployeesCalendar")
+  const queryClient = useQueryClient()
+
+  const [usersListWithShifts, setUsersListWithShifts] = useState<fullUserInfoInterface[]>([])
+
+  const { data: usersList } = useSuspenseQuery<userInterface[]>(getUsersOptions())
+  const { data: shiftsList } = useSuspenseQuery<shiftInterface[]>(getShiftsOptions())
+  console.log(usersList, "usersList")
+  console.log(shiftsList, "shiftsList")
+
+  const mutation = useMutation({
+    mutationFn: (payload: updateShiftPayloadType) => shiftsApi.updateShiftOwnerById(payload),
+
+    onError: () => {
+      toast.error(t("mutationError"))
+      void queryClient.invalidateQueries({ queryKey: ["shifts"] })
+    },
+  })
 
   const sensors = useCalendarShiftSensors()
   const { contextMenu, handleRightClick, handleCloseContextMenu } = useCalendarShiftContextMenu()
@@ -39,16 +62,22 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
     const [activeUserId, activeShiftId] = activeElementId.split("/")
     const [overUserId, overDate] = overElementId.split("/")
 
-    const activeUserIdNum = parseInt(activeUserId, 10)
-    const activeShiftIdNum = parseInt(activeShiftId, 10)
-    const overUserIdNum = parseInt(overUserId, 10)
+    const payload = {
+      id: activeShiftId,
+      shift: {
+        date: overDate,
+        userId: overUserId,
+      },
+    }
 
-    setUsers(prevUsers => {
+    mutation.mutate(payload)
+
+    setUsersListWithShifts(prevUsers => {
       return prevUsers.map(user => {
-        if (user.id === activeUserIdNum) {
+        if (user.id === activeUserId) {
           // If the same user then update shifts
           const updatedShifts = user.shifts.map(shift => {
-            if (shift.id === activeShiftIdNum) {
+            if (shift.id === activeShiftId) {
               //  update the shift date if it is moved
               return {
                 ...shift,
@@ -59,7 +88,7 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
           })
 
           // check if the shift was reassigned
-          if (overUserIdNum === activeUserIdNum) {
+          if (overUserId === activeUserId) {
             return {
               ...user,
               shifts: updatedShifts,
@@ -69,14 +98,14 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
           // remove shift if we reassigned it
           return {
             ...user,
-            shifts: user.shifts.filter(shift => shift.id !== activeShiftIdNum),
+            shifts: user.shifts.filter(shift => shift.id !== activeShiftId),
           }
         }
 
         // if this is the user receiving the shift
-        if (user.id === overUserIdNum) {
-          const activeUser = prevUsers.find(u => u.id === activeUserIdNum)
-          const movedShift = activeUser?.shifts.find(shift => shift.id === activeShiftIdNum)
+        if (user.id === overUserId) {
+          const activeUser = prevUsers.find(u => u.id === activeUserId)
+          const movedShift = activeUser?.shifts.find(shift => shift.id === activeShiftId)
 
           if (movedShift) {
             return {
@@ -96,6 +125,16 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
       })
     })
   }
+
+  useEffect(() => {
+    const usersWithShifts = usersList.map(user => {
+      return {
+        ...user,
+        shifts: shiftsList.filter(shift => shift.userId === user.id),
+      }
+    })
+    setUsersListWithShifts(usersWithShifts)
+  }, [shiftsList])
 
   return (
     <>
@@ -136,7 +175,7 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
               })}
           </div>
 
-          {users.map(user => (
+          {usersListWithShifts.map(user => (
             <div
               key={user.id}
               className="grid min-h-[130px] min-w-[240px] shrink-0 grid-cols-[220px_repeat(7,_1fr)]"

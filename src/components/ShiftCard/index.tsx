@@ -15,7 +15,7 @@ import { ShiftType } from "@/types/enums"
 
 type Props = {
   data: shiftInterface
-  onContextMenu?: (e: React.MouseEvent, id: number) => void
+  onContextMenu?: (e: React.MouseEvent, id: string) => void
   salary: string
   currency: number
 }

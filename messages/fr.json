@@ -3,6 +3,10 @@
     "title": "Hello fr!"
   },
 
+  "EmployeesCalendar": {
+    "mutationError": "Erreur lors de la mise à jour"
+  },
+
   "UserCard": {
     "roles": {
       "employee": "Employé",

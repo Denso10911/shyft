@@ -12,9 +12,9 @@ type Props = {
 }
 
 const CalendarMenu: React.FC<Props> = ({ setCalendar }) => {
-  const [firstDate, setFirstDate] = useState<Dayjs | null>(null)
-  const [lastDate, setLastDate] = useState<Dayjs | null>(null)
   const [day, setDay] = useState(dateNow)
+  const [firstDate, setFirstDate] = useState<Dayjs>(dayjs(day).startOf("isoWeek"))
+  const [lastDate, setLastDate] = useState<Dayjs>(dayjs(day).startOf("isoWeek").add(6, "day"))
 
   const handleBackClick = () => {
     setDay(dayjs(day).subtract(7, "day").toDate())

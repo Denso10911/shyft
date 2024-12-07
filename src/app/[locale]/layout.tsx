@@ -4,7 +4,9 @@ import { notFound } from "next/navigation"
 import { routing } from "@/i18n/routing"
 import localFont from "next/font/local"
 import "../../styles/globals.css"
+import "react-toastify/dist/ReactToastify.css"
 import { localeType } from "@/types/types"
+import Providers from "@/app/[locale]/proviers"
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -36,7 +38,9 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        <Providers>
+          <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   )

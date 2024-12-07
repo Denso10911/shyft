@@ -4,7 +4,7 @@ type ContextMenu = {
   visible: boolean
   x: number
   y: number
-  id: number | null
+  id: string
 }
 
 const useCalendarShiftContextMenu = () => {
@@ -12,10 +12,10 @@ const useCalendarShiftContextMenu = () => {
     visible: false,
     x: 0,
     y: 0,
-    id: null,
+    id: "",
   })
 
-  const handleRightClick = (event: React.MouseEvent, id: number) => {
+  const handleRightClick = (event: React.MouseEvent, id: string) => {
     event.preventDefault() // Відключаємо стандартне меню браузера
     setContextMenu({
       visible: true,
@@ -26,7 +26,7 @@ const useCalendarShiftContextMenu = () => {
   }
 
   const handleCloseContextMenu = () => {
-    setContextMenu({ visible: false, x: 0, y: 0, id: null })
+    setContextMenu({ visible: false, x: 0, y: 0, id: "" })
   }
 
   return { contextMenu, handleRightClick, handleCloseContextMenu }
