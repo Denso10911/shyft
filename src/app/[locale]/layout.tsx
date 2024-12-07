@@ -4,7 +4,7 @@ import { notFound } from "next/navigation"
 import { routing } from "@/i18n/routing"
 import localFont from "next/font/local"
 import "../../styles/globals.css"
-import { localeType } from "@/types/locale"
+import { localeType } from "@/types/types"
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",

@@ -34,3 +34,9 @@ export enum ShiftVariant {
   SHIFT,
   ABSENCE,
 }
+
+export enum ShiftTimingOptions {
+  MORNING_SHIFT,
+  DAY_SHIFT,
+  EVENING_SHIFT,
+}

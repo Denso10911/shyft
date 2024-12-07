@@ -11,20 +11,21 @@ import { FaRegPauseCircle } from "react-icons/fa"
 import { FaRegMoneyBillAlt } from "react-icons/fa"
 import Checkbox from "@/components/Checkbox"
 import { useTranslations } from "next-intl"
-import ConditionalRender from "@/components/ConditionalRender"
 import dayjs from "dayjs"
 
 type Props = {
   data: shiftInterface
   onContextMenu?: (e: React.MouseEvent, id: number) => void
+  salary: string
+  currency: number
 }
 
-const AbsenceCard: React.FC<Props> = ({ data, onContextMenu }) => {
+const AbsenceCard: React.FC<Props> = ({ data, onContextMenu, salary, currency }) => {
   const t = useTranslations("ShiftCard")
 
   const [isChecked, setIsChecked] = useState(false)
 
-  const { start, end, salary, currency, shiftType, breakUnpaid, id } = data
+  const { start, end, shiftType, breakUnpaid, id } = data
 
   return (
     <div
@@ -43,13 +44,15 @@ const AbsenceCard: React.FC<Props> = ({ data, onContextMenu }) => {
       </div>
 
       <div className="flex gap-2 text-sm text-color-dark-gray">
-        <div className="flex text-2xl font-bold">{t(`labels.${shiftTypeLabels[shiftType]}`)}</div>
+        {shiftType && (
+          <div className="flex text-2xl font-bold">{t(`labels.${shiftTypeLabels[shiftType]}`)}</div>
+        )}
 
-        <ConditionalRender value={start && end}>
+        {start && end && (
           <p className="flex items-center gap-1">
             <FaRegClock /> {getFormatedDuration(start, end)}
           </p>
-        </ConditionalRender>
+        )}
 
         {breakUnpaid && (
           <p className="flex items-center gap-1">
@@ -65,9 +68,11 @@ const AbsenceCard: React.FC<Props> = ({ data, onContextMenu }) => {
         )}
       </div>
 
-      <div className="text flex gap-2 text-lg capitalize text-color-dark-gray">
-        {t(`badges.${shiftTypeLabels[shiftType]}`)}
-      </div>
+      {shiftType && (
+        <div className="text flex gap-2 text-lg capitalize text-color-dark-gray">
+          {t(`badges.${shiftTypeLabels[shiftType]}`)}
+        </div>
+      )}
       {start && end && (
         <div className="flex text-sm text-color-dark-gray">
           {dayjs(start).format("H:mm")}-{dayjs(end).format("H:mm")}

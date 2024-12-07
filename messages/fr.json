@@ -3,7 +3,7 @@
     "title": "Hello fr!"
   },
 
-  "UserCard" :  {
+  "UserCard": {
     "roles": {
       "employee": "Employé",
       "student": "Etudiant"
@@ -30,9 +30,34 @@
       "sickLeave": "MA"
     }
   },
+
   "ShiftContextMenu": {
     "copy": "Copier",
     "edit": "Créer un contrat",
     "delete": "Supprimer"
+  },
+
+  "Form": {
+    "labels": {
+      "section": "Section",
+      "user": "Utilisateur",
+      "competencies": "Compétences",
+      "attributes": "Attributs",
+      "start": "Début",
+      "end": "Fin",
+      "templates": "Raccourcis",
+      "breakPaid": "Pause payée",
+      "breakUnpaid": "Pause non payée",
+      "specialCode": "Code spécial RH"
+    },
+    "buttons": {
+      "shift": "Shift",
+      "absence": "Absence",
+      "cancel": "Annuler",
+      "addShift": "Créer shift",
+      "editShift": "Modifier shift"
+    },
+    "placeholders": {},
+    "validation": {}
   }
 }

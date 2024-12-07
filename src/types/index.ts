@@ -8,25 +8,25 @@ export interface userInterface {
   role: UserRoles
   hoursWorked: number
   profileImage: string | StaticImageData | null
+  currency: number
+  salary: string
 }
 
 export interface shiftInterface {
   id: number
-  userId: number
+  userId: number | null
   competencies: string[]
   attributes: string[]
   date: string
   start: string
   end: string
-  breakPaid: string | null
-  breakUnpaid: string | null
-  specialCode: string
+  breakPaid: number | null
+  breakUnpaid: number | null
+  specialCode: string | null
   isShiftCompensated: boolean
-  currency: number | null
-  salary: string | null
-  exceedsMaxHours: boolean
+  shiftType: ShiftType | null
   status: ShiftVariant
-  shiftType: ShiftType
+  shiftLength: number | null
 }
 
 export interface fullUserInfoInterface extends userInterface {

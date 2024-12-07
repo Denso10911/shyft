@@ -22,7 +22,7 @@ const Checkbox: React.FC<Props> = ({ isChecked, setIsChecked, label }) => {
 
   return (
     <div
-      className=" flex cursor-pointer items-center gap-2"
+      className="flex cursor-pointer items-center gap-2"
       onClick={() => setIsChecked(!isChecked)}
     >
       <div

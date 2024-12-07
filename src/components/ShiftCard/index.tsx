@@ -2,7 +2,6 @@
 
 import React, { useState } from "react"
 import { shiftInterface } from "@/types"
-import ConditionalRender from "@/components/ConditionalRender"
 import Badge from "@/components/Badge"
 import { shiftTypeColors, shiftTypeLabels } from "@/utiles/shiftTypeData"
 import dayjs from "dayjs"
@@ -17,14 +16,16 @@ import { ShiftType } from "@/types/enums"
 type Props = {
   data: shiftInterface
   onContextMenu?: (e: React.MouseEvent, id: number) => void
+  salary: string
+  currency: number
 }
 
-const ShiftCard: React.FC<Props> = ({ data, onContextMenu }) => {
+const ShiftCard: React.FC<Props> = ({ data, onContextMenu, salary, currency }) => {
   const t = useTranslations("ShiftCard")
 
   const [isChecked, setIsChecked] = useState(false)
 
-  const { start, end, salary, currency, shiftType, breakUnpaid, id } = data
+  const { start, end, shiftType, breakUnpaid, id } = data
 
   const backgroundColor =
     data.shiftType === ShiftType.CLOSURE ? "bg-[#f9faff]" : "bg-color-light-green"
@@ -61,13 +62,13 @@ const ShiftCard: React.FC<Props> = ({ data, onContextMenu }) => {
         )}
       </div>
 
-      <ConditionalRender value={shiftType}>
+      {!!shiftType && (
         <Badge
           label={t(`badges.${shiftTypeLabels[shiftType]}`)}
           background={shiftTypeColors[shiftType]}
           width="full"
         />
-      </ConditionalRender>
+      )}
     </div>
   )
 }

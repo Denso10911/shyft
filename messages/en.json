@@ -3,7 +3,7 @@
     "title": "Hello world!"
   },
 
-  "UserCard" :  {
+  "UserCard": {
     "roles": {
       "employee": "Employee",
       "student": "Student"
@@ -35,5 +35,29 @@
     "copy": "Copy",
     "edit": "Edit",
     "delete": "Delete"
+  },
+
+  "Form": {
+    "labels": {
+      "section": "Section",
+      "user": "User",
+      "competencies": "Competencies",
+      "attributes": "Attributes",
+      "start": "Start",
+      "end": "End",
+      "templates": "Templates",
+      "breakPaid": "Break paid",
+      "breakUnpaid": "Break unpaid",
+      "specialCode": "Special code"
+    },
+    "buttons": {
+      "shift": "Shift",
+      "absence": "Absence",
+      "cancel": "Cancel",
+      "addShift": "Add shift",
+      "editShift": "Edit shift"
+    },
+    "placeholders": {},
+    "validation": {}
   }
 }

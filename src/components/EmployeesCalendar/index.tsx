@@ -164,13 +164,23 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
                       if (shift.status !== ShiftVariant.SHIFT) {
                         return (
                           <Draggable id={`${user.id}/${shift.id}`} key={`${user.id}/${shift.id}`}>
-                            <AbsenceCard data={shift} onContextMenu={handleRightClick} />
+                            <AbsenceCard
+                              data={shift}
+                              onContextMenu={handleRightClick}
+                              salary={user.salary}
+                              currency={user.currency}
+                            />
                           </Draggable>
                         )
                       }
                       return (
                         <Draggable id={`${user.id}/${shift.id}`} key={`${user.id}/${shift.id}`}>
-                          <ShiftCard data={shift} onContextMenu={handleRightClick} />
+                          <ShiftCard
+                            data={shift}
+                            onContextMenu={handleRightClick}
+                            salary={user.salary}
+                            currency={user.currency}
+                          />
                         </Draggable>
                       )
                     })}
