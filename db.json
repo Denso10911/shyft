@@ -8,7 +8,7 @@
       "hoursWorked": 90,
       "profileImage": null,
       "currency": 974,
-      "salary": "123"
+      "salary": "90"
     },
     {
       "id": "2",
@@ -18,7 +18,7 @@
       "hoursWorked": 20,
       "profileImage": null,
       "currency": 974,
-      "salary": "123"
+      "salary": "80"
     },
     {
       "id": "3",
@@ -28,7 +28,7 @@
       "hoursWorked": 35,
       "profileImage": null,
       "currency": 974,
-      "salary": "123"
+      "salary": "130"
     },
     {
       "id": "4",
@@ -38,19 +38,15 @@
       "hoursWorked": 60,
       "profileImage": null,
       "currency": 974,
-      "salary": "123"
+      "salary": "500"
     }
   ],
   "shifts": [
     {
       "shiftType": 2,
       "userId": "2",
-      "competencies": [
-        "Competency 1"
-      ],
-      "attributes": [
-        "Attribute 1"
-      ],
+      "competencies": ["Competency 1"],
+      "attributes": ["Attribute 1"],
       "start": "11:00",
       "end": "19:00",
       "breakPaid": null,
@@ -64,7 +60,7 @@
     },
     {
       "shiftType": 5,
-      "userId": "2",
+      "userId": "1",
       "competencies": [],
       "attributes": [],
       "start": "10:00",
@@ -76,7 +72,7 @@
       "shiftVariant": 0,
       "shiftLength": 120,
       "id": "2",
-      "date": "2024-12-11"
+      "date": "2024-12-10"
     },
     {
       "id": "cf6c5fd0-b597-11ef-8d4c-87336e263e81",
@@ -92,23 +88,23 @@
       "isShiftCompensated": true,
       "shiftVariant": 0,
       "shiftLength": 300,
-      "date": "2024-12-15"
+      "date": "2024-12-09"
     },
     {
-      "id": "c721d2e0-b5b7-11ef-b849-991345f0812c",
-      "shiftType": null,
-      "userId": "1",
-      "competencies": [],
+      "shiftType": 4,
+      "userId": "3",
+      "competencies": ["Competency 2"],
       "attributes": [],
-      "start": "00:00",
-      "end": "00:00",
+      "start": "02:00",
+      "end": "03:00",
       "breakPaid": null,
       "breakUnpaid": null,
       "specialCode": null,
       "isShiftCompensated": false,
       "shiftVariant": 0,
-      "shiftLength": 0,
-      "date": "2024-12-11"
+      "shiftLength": 60,
+      "id": "40f9ef70-b5be-11ef-8358-05bf5a37e092",
+      "date": "2024-12-10"
     }
   ]
 }

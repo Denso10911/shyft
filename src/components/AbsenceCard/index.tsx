@@ -2,9 +2,7 @@
 
 import React, { useState } from "react"
 import { FaRegClock } from "react-icons/fa"
-import { FaRegPauseCircle } from "react-icons/fa"
 import { FaRegMoneyBillAlt } from "react-icons/fa"
-import dayjs from "dayjs"
 import { useTranslations } from "next-intl"
 
 import Checkbox from "@/components/Checkbox"
@@ -12,8 +10,6 @@ import ShiftContextMenuContainer from "@/components/ShiftContextMenuContainer"
 
 import useCalendarShiftContextMenu from "@/hooks/useCalendarShiftContextMenu"
 import { shiftInterface } from "@/types"
-import { getFormatedBreakPeriod } from "@/utiles/getFormatedBreakPeriod"
-import { getFormatedDuration } from "@/utiles/getFormatedDuration"
 import { getFormatedSalaryAmount } from "@/utiles/getFormatedSalaryAmount"
 import { getMinutesToHHmm } from "@/utiles/getMinutesToHHmm"
 import { shiftTypeLabels } from "@/utiles/shiftTypeData"

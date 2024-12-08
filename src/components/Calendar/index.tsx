@@ -19,10 +19,7 @@ const Calendar = () => {
   const [calendar, setCalendar] = useState<DateNumberT[]>([])
 
   return (
-    <div
-      data-page="Calendar"
-      className="flex h-full flex-1 flex-col gap-6 rounded bg-color-white shadow"
-    >
+    <div className="flex h-full flex-1 flex-col gap-6 rounded bg-color-white shadow">
       <CalendarMenu setCalendar={setCalendar} />
 
       {!!calendar.length && <EmployeesCalendar calendar={calendar} />}

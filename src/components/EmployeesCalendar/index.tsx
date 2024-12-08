@@ -18,7 +18,6 @@ import { getUsersOptions } from "@/api/users"
 import useCalendarShiftSensors from "@/hooks/useCalendarShiftSensors"
 import { fullUserInfoInterface, shiftInterface, userInterface } from "@/types"
 import { DateNumberT } from "@/types/calendar"
-import { updateUserListWithShifts } from "@/utiles/updateUserListWithShifts"
 dayjs.extend(weekday)
 
 interface Props {
@@ -80,7 +79,7 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
               )
               return {
                 ...user,
-                shifts: [...user.shifts, newShift],
+                shifts: [...user.shifts, { ...newShift, userId: overUserId, date: overDate }],
               }
             }
           }
@@ -112,14 +111,6 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
         }
 
         return prevUsers
-
-        // return updateUserListWithShifts(
-        //   prevUsers,
-        //   activeUserId,
-        //   activeShiftId,
-        //   overUserId,
-        //   overDate
-        // )
       })
     }
   }
@@ -143,10 +134,7 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
 
   return (
     <>
-      <div
-        data-component="EmployeesCalendar"
-        className={cn(" max-h-[calc(100vh-110px)] overflow-auto bg-color-white")}
-      >
+      <div className={cn("max-h-[calc(100vh-110px)] overflow-auto bg-color-white")}>
         <DndContext
           onDragEnd={handleDragEnd}
           sensors={sensors}
