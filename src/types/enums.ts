@@ -40,3 +40,9 @@ export enum ShiftTimingOptions {
   DAY_SHIFT,
   EVENING_SHIFT,
 }
+
+export enum ShiftModalTypes {
+  CREATE = "CREATE",
+  EDIT = "EDIT",
+  COPY = "COPY",
+}

@@ -12,8 +12,8 @@ export const mockShiftData: shiftInterface[] = [
     competencies: [],
     attributes: [],
     date: "2024-12-04",
-    start: "2024-12-04T07:00:00",
-    end: "2024-12-04T15:20:00",
+    start: "07:00",
+    end: "15:20",
     breakPaid: 0,
     breakUnpaid: 30,
     specialCode: "specialCode",
@@ -28,8 +28,8 @@ export const mockShiftData: shiftInterface[] = [
     competencies: [],
     attributes: [],
     date: "2024-12-04",
-    start: "2024-12-04T07:00:00",
-    end: "2024-12-04T15:20:00",
+    start: "07:00",
+    end: "15:20",
     breakPaid: 0,
     breakUnpaid: 30,
     specialCode: "specialCode",
@@ -141,3 +141,14 @@ export const mockUserOptions = mockUsersData.map(user => ({
   label: `${user.firstName} ${user.lastName}`,
   hoursWorked: user.hoursWorked,
 }))
+
+export const emptyUserData = {
+  id: "-1",
+  firstName: "",
+  lastName: "",
+  role: 0,
+  hoursWorked: 0,
+  profileImage: null,
+  currency: 0,
+  salary: "",
+}

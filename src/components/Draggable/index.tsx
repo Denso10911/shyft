@@ -26,7 +26,7 @@ const Draggable: React.FC<Props> = ({ children, id }) => {
       style={style}
       {...listeners}
       {...attributes}
-      className={cn(isActive ? "z-10 cursor-grabbing" : " cursor-grab")}
+      className={cn(isActive ? "z-10 cursor-grabbing" : " cursor-grab", "text-start")}
     >
       {children}
     </button>

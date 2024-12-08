@@ -63,5 +63,12 @@
     },
     "placeholders": {},
     "validation": {}
+  },
+
+  "ShiftModal": {
+    "titles": {
+      "create": "Création d'un shift",
+      "edit": "Modification d'un shift"
+    }
   }
 }

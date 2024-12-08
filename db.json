@@ -44,35 +44,67 @@
   "shifts": [
     {
       "id": "1",
-      "userId": "2",
+      "userId": "1",
       "competencies": [],
       "attributes": [],
-      "date": "2024-12-04",
-      "start": "2024-12-04T07:00:00",
-      "end": "2024-12-04T15:20:00",
+      "date": "2024-12-05",
+      "start": "10:00",
+      "end": "20:00",
       "breakPaid": 0,
       "breakUnpaid": 30,
       "specialCode": "specialCode",
       "isShiftCompensated": true,
       "status": 0,
       "shiftType": 1,
-      "shiftLength": 0
+      "shiftLength": 600
     },
     {
       "id": "2",
-      "userId": "3",
+      "userId": "1",
       "competencies": [],
       "attributes": [],
       "date": "2024-12-03",
-      "start": "2024-12-04T07:00:00",
-      "end": "2024-12-04T15:20:00",
+      "start": "10:00",
+      "end": "15:00",
       "breakPaid": 0,
       "breakUnpaid": 30,
       "specialCode": "specialCode",
       "isShiftCompensated": true,
       "status": 0,
       "shiftType": 1,
-      "shiftLength": 0
+      "shiftLength": 300
+    },
+    {
+      "id": "6355fec0-b586-11ef-9a85-81c8a3857db3",
+      "shiftType": null,
+      "userId": "2",
+      "competencies": [],
+      "attributes": [],
+      "start": "10:00",
+      "end": "20:00",
+      "breakPaid": null,
+      "breakUnpaid": null,
+      "specialCode": null,
+      "isShiftCompensated": false,
+      "status": 0,
+      "shiftLength": null,
+      "date": "2024-12-03"
+    },
+    {
+      "id": "13f23eb0-b587-11ef-b1b9-4782211d5381",
+      "shiftType": null,
+      "userId": "2",
+      "competencies": [],
+      "attributes": [],
+      "start": "02:00",
+      "end": "03:00",
+      "breakPaid": 120,
+      "breakUnpaid": 180,
+      "specialCode": null,
+      "isShiftCompensated": false,
+      "status": 0,
+      "shiftLength": 60,
+      "date": "2024-12-03"
     }
   ]
 }

@@ -11,7 +11,7 @@ type Props = {
 const InputLabelWrapper: React.FC<Props> = ({ label, error, children, className, required }) => {
   return (
     <label className={cn(className, "flex flex-col gap-1 text-sm font-medium text-gray-700")}>
-      <span className="text-m block font-bold">
+      <span className="text-m flex gap-1 font-bold">
         {required && <span className="text-red-500">*</span>}
         {label}
       </span>

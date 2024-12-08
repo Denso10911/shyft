@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { FaPlus } from "react-icons/fa"
 import { toast } from "react-toastify"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { restrictToFirstScrollableAncestor, restrictToWindowEdges } from "@dnd-kit/modifiers"
@@ -8,22 +9,20 @@ import dayjs from "dayjs"
 import weekday from "dayjs/plugin/weekday"
 import { useTranslations } from "next-intl"
 
-import AbsenceCard from "@/components/AbsenceCard"
+import AsideModal from "@/components/AsideModal"
+import CalendarRow from "@/components/CalendarRow"
 import ContextMenuContainer from "@/components/ContextMenuContainer"
-import Draggable from "@/components/Draggable"
-import Droppable from "@/components/Droppable"
-import ShiftCard from "@/components/ShiftCard"
 import ShiftContextMenu from "@/components/ShiftContextMenu"
-import UserCard from "@/components/UserCard"
 
 import { getShiftsOptions, shiftsApi } from "@/api/shifts"
 import { updateShiftPayloadType } from "@/api/types"
 import { getUsersOptions } from "@/api/users"
 import useCalendarShiftContextMenu from "@/hooks/useCalendarShiftContextMenu"
 import useCalendarShiftSensors from "@/hooks/useCalendarShiftSensors"
+import { useShiftStore } from "@/store/shiftStore"
 import { fullUserInfoInterface, shiftInterface, userInterface } from "@/types"
 import { DateNumberT } from "@/types/calendar"
-import { ShiftVariant } from "@/types/enums"
+import { emptyUserData } from "@/utiles/dummyContents"
 dayjs.extend(weekday)
 
 interface Props {
@@ -35,6 +34,10 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
   const queryClient = useQueryClient()
 
   const [usersListWithShifts, setUsersListWithShifts] = useState<fullUserInfoInterface[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [unassignedShifts, setUnassignedShifts] = useState<shiftInterface[]>([])
+
+  const setSelectedDate = useShiftStore(state => state.setSelectedDate)
 
   const { data: usersList } = useSuspenseQuery<userInterface[]>(getUsersOptions())
   const { data: shiftsList } = useSuspenseQuery<shiftInterface[]>(getShiftsOptions())
@@ -73,59 +76,86 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
       mutation.mutate(payload)
     }
 
-    setUsersListWithShifts(prevUsers => {
-      return prevUsers.map(user => {
-        if (user.id === activeUserId) {
-          // If the same user then update shifts
-          const updatedShifts = user.shifts.map(shift => {
-            if (shift.id === activeShiftId) {
-              //  update the shift date if it is moved
+    if (activeUserId === "-1") {
+      setUsersListWithShifts(prevUsers => {
+        return prevUsers.map(user => {
+          if (user.id === overUserId) {
+            const newShift = unassignedShifts.find(shift => shift.id === activeShiftId)
+            if (newShift) {
+              setUnassignedShifts(prevShifts =>
+                prevShifts.filter(shift => shift.id !== activeShiftId)
+              )
               return {
-                ...shift,
-                date: overDate,
+                ...user,
+                shifts: [...user.shifts, newShift],
               }
             }
-            return shift
-          })
-
-          // check if the shift was reassigned
-          if (overUserId === activeUserId) {
-            return {
-              ...user,
-              shifts: updatedShifts,
-            }
           }
-
-          // remove shift if we reassigned it
-          return {
-            ...user,
-            shifts: user.shifts.filter(shift => shift.id !== activeShiftId),
-          }
-        }
-
-        // if this is the user receiving the shift
-        if (user.id === overUserId) {
-          const activeUser = prevUsers.find(u => u.id === activeUserId)
-          const movedShift = activeUser?.shifts.find(shift => shift.id === activeShiftId)
-
-          if (movedShift) {
-            return {
-              ...user,
-              shifts: [
-                ...user.shifts,
-                {
-                  ...movedShift,
-                  date: overDate,
-                },
-              ],
-            }
-          }
-        }
-
-        return user
+          return user
+        })
       })
-    })
+    } else {
+      setUsersListWithShifts(prevUsers => {
+        return prevUsers.map(user => {
+          if (user.id === activeUserId) {
+            // If the same user then update shifts
+            const updatedShifts = user.shifts.map(shift => {
+              if (shift.id === activeShiftId) {
+                //  update the shift date if it is moved
+                return {
+                  ...shift,
+                  date: overDate,
+                }
+              }
+              return shift
+            })
+
+            // check if the shift was reassigned
+            if (overUserId === activeUserId) {
+              return {
+                ...user,
+                shifts: updatedShifts,
+              }
+            }
+
+            // remove shift if we reassigned it
+            return {
+              ...user,
+              shifts: user.shifts.filter(shift => shift.id !== activeShiftId),
+            }
+          }
+
+          // if this is the user receiving the shift
+          if (user.id === overUserId) {
+            const activeUser = prevUsers.find(u => u.id === activeUserId)
+            const movedShift = activeUser?.shifts.find(shift => shift.id === activeShiftId)
+
+            if (movedShift) {
+              return {
+                ...user,
+                shifts: [
+                  ...user.shifts,
+                  {
+                    ...movedShift,
+                    date: overDate,
+                  },
+                ],
+              }
+            }
+          }
+
+          return user
+        })
+      })
+    }
   }
+
+  const handleCreateClick = (date: string) => {
+    setSelectedDate(date)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {}
 
   useEffect(() => {
     const usersWithShifts = usersList.map(user => {
@@ -134,6 +164,13 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
         shifts: shiftsList.filter(shift => shift.userId === user.id),
       }
     })
+
+    const unassignedShifts = shiftsList.filter(shift => !shift.userId)
+
+    if (unassignedShifts.length) {
+      setUnassignedShifts(unassignedShifts)
+    }
+
     setUsersListWithShifts(usersWithShifts)
   }, [shiftsList])
 
@@ -141,7 +178,7 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
     <>
       <div
         data-component="EmployeesCalendar"
-        className={cn("relative max-h-[calc(100vh-110px)] overflow-auto rounded-md bg-color-white")}
+        className={cn("relative max-h-[calc(100vh-110px)] overflow-auto bg-color-white")}
       >
         <DndContext
           onDragEnd={handleDragEnd}
@@ -151,7 +188,7 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
           <div className="relative grid grid-cols-[220px_repeat(7,_1fr)]">
             <div
               className={cn(
-                "sticky left-0 z-20 flex items-center justify-center border-b border-r border-color-light-blue bg-[#f9f9f9] py-4 "
+                "sticky left-0 z-20 flex items-center justify-center border bg-[#f9f9f9] py-4 "
               )}
             >
               <div className="sticky left-0 w-full px-4">Search</div>
@@ -165,72 +202,44 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
                 return (
                   <div
                     className={cn(
-                      "flex min-w-[240px] shrink-0 cursor-pointer flex-col items-center justify-center border-b border-r border-color-light-blue ",
+                      "d group relative flex min-w-[240px] shrink-0 cursor-pointer flex-col items-center justify-center border-b border-r border-t transition ",
                       isToday ? "bg-[#e3e6f1]" : "bg-[#f9f9f9]"
                     )}
                     key={i}
+                    onClick={() => handleCreateClick(calendarDate)}
                   >
-                    <div className="font-bold capitalize">{`${dayOfWeek.replace(".", "")} ${el.day}`}</div>
+                    <div className="absolute right-2 top-2 text-sm text-color-gray opacity-0 transition group-hover:opacity-100">
+                      <FaPlus />
+                    </div>
+                    <div className="font-bold capitalize transition group-hover:scale-105">{`${dayOfWeek.replace(".", "")} ${el.day}`}</div>
                   </div>
                 )
               })}
           </div>
+          {unassignedShifts.length > 0 && (
+            <CalendarRow
+              key="empty row"
+              user={{
+                ...emptyUserData,
+                shifts: unassignedShifts,
+              }}
+              isUnassigned
+              calendar={calendar}
+              handleRightClick={handleRightClick}
+            />
+          )}
 
           {usersListWithShifts.map(user => (
-            <div
+            <CalendarRow
               key={user.id}
-              className="grid min-h-[130px] min-w-[240px] shrink-0 grid-cols-[220px_repeat(7,_1fr)]"
-            >
-              <div
-                className={cn(
-                  "border-color-border-gray_dark sticky left-0 z-20 flex shrink-0 items-center border-b border-r bg-[#f9f9f9] px-5"
-                )}
-              >
-                <UserCard data={user} />
-              </div>
-              {calendar.map(date => {
-                const calendarDate = `${date.year}-${date.month}-${date.day}`
-                const userShifts = user.shifts.filter(
-                  shift => dayjs(shift.date).format("YYYY-MM-DD") === calendarDate
-                )
-
-                return (
-                  <Droppable
-                    key={`${user.id}/${calendarDate}`}
-                    id={`${user.id}/${calendarDate}`}
-                    className={"flex min-w-[240px] flex-col gap-2 border-b border-r p-4"}
-                  >
-                    {userShifts.map(shift => {
-                      if (shift.status !== ShiftVariant.SHIFT) {
-                        return (
-                          <Draggable id={`${user.id}/${shift.id}`} key={`${user.id}/${shift.id}`}>
-                            <AbsenceCard
-                              data={shift}
-                              onContextMenu={handleRightClick}
-                              salary={user.salary}
-                              currency={user.currency}
-                            />
-                          </Draggable>
-                        )
-                      }
-                      return (
-                        <Draggable id={`${user.id}/${shift.id}`} key={`${user.id}/${shift.id}`}>
-                          <ShiftCard
-                            data={shift}
-                            onContextMenu={handleRightClick}
-                            salary={user.salary}
-                            currency={user.currency}
-                          />
-                        </Draggable>
-                      )
-                    })}
-                  </Droppable>
-                )
-              })}
-            </div>
+              user={user}
+              calendar={calendar}
+              handleRightClick={handleRightClick}
+            />
           ))}
         </DndContext>
       </div>
+
       {contextMenu.visible && (
         <ContextMenuContainer
           top={contextMenu.y}
@@ -240,6 +249,8 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
           <ShiftContextMenu />
         </ContextMenuContainer>
       )}
+
+      <AsideModal isOpen={isModalOpen} closeHandler={handleCloseModal} />
     </>
   )
 }

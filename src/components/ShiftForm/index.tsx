@@ -2,14 +2,19 @@ import { useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import Select from "react-select"
 import TimeField from "react-simple-timefield"
+import { toast } from "react-toastify"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useTranslations } from "next-intl"
+import { v1 as uuidv1 } from "uuid"
 
 import Button from "@/components/Button"
 import InputLabelWrapper from "@/components/InputLabelWrapper"
 
 import Checkbox from "../Checkbox"
 
+import { shiftsApi } from "@/api/shifts"
+import { useShiftStore } from "@/store/shiftStore"
 import { shiftInterface, userInterface } from "@/types"
 import { ShiftTimingOptions, ShiftVariant } from "@/types/enums"
 import { mockUserOptions, mockUsersData } from "@/utiles/dummyContents"
@@ -25,20 +30,30 @@ import { getMinutesToHHmm } from "@/utiles/getMinutesToHHmm"
 import { selectStyles, timePickerStyles } from "@/utiles/styles"
 
 type Props = {
-  data?: shiftInterface
   closeHandler: () => void
 }
 
-const ShiftForm: React.FC<Props> = ({ data, closeHandler }) => {
+const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
   const t = useTranslations("Form")
+  const queryClient = useQueryClient()
+
+  const { selectedShift, selectedDate } = useShiftStore(state => state)
 
   const [template, setTemplate] = useState<ShiftTimingOptions | null>(null)
-
   const [exceedingHours, setExceedingHours] = useState(0)
+  const [userData, setUserData] = useState<userInterface | null>(null)
 
-  const [userData, setUserData] = useState<userInterface | null>(
-    data ? mockUsersData.find(user => user.id === data?.userId) || null : null
-  )
+  const mutation = useMutation({
+    mutationFn: (payload: shiftInterface) => shiftsApi.createShift(payload),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["shifts"] })
+      toast.success("Shift added successfully")
+      closeHandler()
+    },
+    onError: () => {
+      toast.error(t("mutationError"))
+    },
+  })
 
   const {
     handleSubmit,
@@ -48,18 +63,18 @@ const ShiftForm: React.FC<Props> = ({ data, closeHandler }) => {
     formState: { errors },
   } = useForm<Omit<shiftInterface, "id">>({
     defaultValues: {
-      shiftType: data?.shiftType,
-      userId: data?.userId,
-      competencies: data?.competencies || [],
-      attributes: data?.attributes || [],
-      start: data?.start,
-      end: data?.end,
-      breakPaid: data?.breakPaid || null,
-      breakUnpaid: data?.breakUnpaid || null,
-      specialCode: data?.specialCode,
-      isShiftCompensated: data?.isShiftCompensated,
-      status: data?.status,
-      shiftLength: data?.shiftLength,
+      shiftType: selectedShift?.shiftType || null,
+      userId: selectedShift?.userId || "",
+      competencies: selectedShift?.competencies || [],
+      attributes: selectedShift?.attributes || [],
+      start: selectedShift?.start || "",
+      end: selectedShift?.end || "",
+      breakPaid: selectedShift?.breakPaid || null,
+      breakUnpaid: selectedShift?.breakUnpaid || null,
+      specialCode: selectedShift?.specialCode || null,
+      isShiftCompensated: !!selectedShift?.isShiftCompensated,
+      status: selectedShift?.status || 0,
+      shiftLength: selectedShift?.shiftLength || null,
     },
   })
 
@@ -89,9 +104,18 @@ const ShiftForm: React.FC<Props> = ({ data, closeHandler }) => {
     }
   }, [formValues])
 
-  const onSubmit = (dataToSubmit: Omit<shiftInterface, "id">) => {
-    console.log(dataToSubmit)
-    closeHandler()
+  const onSubmit = (dataToSubmit: Omit<shiftInterface, "id" | "date">) => {
+    const shiftId = selectedShift ? selectedShift.id : uuidv1()
+    const shiftDate = selectedShift ? selectedShift.date : selectedDate
+
+    const payload: shiftInterface = {
+      ...dataToSubmit,
+      id: shiftId,
+      date: shiftDate || dayjs().format("YYYY-MM-DD"),
+      shiftLength: getHHmmToMinutes(dataToSubmit.end) - getHHmmToMinutes(dataToSubmit.start),
+    }
+
+    mutation.mutate(payload)
   }
 
   return (

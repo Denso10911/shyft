@@ -6,6 +6,7 @@
   "EmployeesCalendar": {
     "mutationError": "Something went wrong, please try again later."
   },
+
   "UserCard": {
     "roles": {
       "employee": "Employee",
@@ -62,5 +63,12 @@
     },
     "placeholders": {},
     "validation": {}
+  },
+
+  "ShiftModal": {
+    "titles": {
+      "create": "Create new shift",
+      "edit": "Edit shift"
+    }
   }
 }

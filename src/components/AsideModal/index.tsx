@@ -2,10 +2,12 @@
 import React from "react"
 import { IoMdClose } from "react-icons/io"
 import Modal from "react-modal"
+import { useTranslations } from "next-intl"
 
 import ShiftForm from "../ShiftForm"
 
-import { shiftInterface } from "@/types"
+import { useShiftStore } from "@/store/shiftStore"
+import { ShiftModalTypes } from "@/types/enums"
 import { customModalStyles } from "@/utiles/styles"
 
 Modal.setAppElement("body")
@@ -13,22 +15,19 @@ Modal.setAppElement("body")
 type Props = {
   isOpen: boolean
   closeHandler: () => void
-  type: "newShift" | "editShift"
-  data?: shiftInterface
 }
 
-const renderTitle = (type: "newShift" | "editShift") => {
-  switch (type) {
-    case "newShift":
-      return <h2 className="text-xl font-bold">Create new shift</h2>
-    case "editShift":
-      return <h2 className="text-xl font-bold">Edit shift</h2>
-    default:
-      return null
+const AsideModal: React.FC<Props> = ({ isOpen, closeHandler }) => {
+  const t = useTranslations("ShiftModal")
+
+  const shiftModalType = useShiftStore(state => state.shiftModalType)
+
+  const modalTitles = {
+    [ShiftModalTypes.CREATE]: t("titles.create"),
+    [ShiftModalTypes.EDIT]: t("titles.edit"),
+    [ShiftModalTypes.COPY]: t("titles.create"),
   }
-}
 
-const AsideModal: React.FC<Props> = ({ isOpen, closeHandler, type, data }) => {
   return (
     <Modal isOpen={isOpen} style={customModalStyles} onRequestClose={closeHandler} className="">
       <div className="h-full font-[family-name:var(--font-geist-sans)]">
@@ -41,9 +40,9 @@ const AsideModal: React.FC<Props> = ({ isOpen, closeHandler, type, data }) => {
           >
             <IoMdClose className="h-full w-full" />
           </button>
-          {renderTitle(type)}
+          <h2 className="text-xl font-bold">{modalTitles[shiftModalType]}</h2>
         </div>
-        <ShiftForm data={data} closeHandler={closeHandler} />
+        <ShiftForm closeHandler={closeHandler} />
       </div>
     </Modal>
   )

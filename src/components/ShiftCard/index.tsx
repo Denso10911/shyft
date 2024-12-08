@@ -13,6 +13,7 @@ import { ShiftType } from "@/types/enums"
 import { getFormatedBreakPeriod } from "@/utiles/getFormatedBreakPeriod"
 import { getFormatedDuration } from "@/utiles/getFormatedDuration"
 import { getFormatedSalaryAmount } from "@/utiles/getFormatedSalaryAmount"
+import { getMinutesToHHmm } from "@/utiles/getMinutesToHHmm"
 import { shiftTypeColors, shiftTypeLabels } from "@/utiles/shiftTypeData"
 
 type Props = {
@@ -27,10 +28,12 @@ const ShiftCard: React.FC<Props> = ({ data, onContextMenu, salary, currency }) =
 
   const [isChecked, setIsChecked] = useState(false)
 
-  const { start, end, shiftType, breakUnpaid, id } = data
+  const { start, end, shiftType, breakUnpaid, id, shiftLength } = data
 
   const backgroundColor =
-    data.shiftType === ShiftType.CLOSURE ? "bg-[#f9faff]" : "bg-color-light-green"
+    data.shiftType === ShiftType.CLOSURE || !data.shiftType
+      ? "bg-[#f9faff]"
+      : "bg-color-light-green"
 
   return (
     <div
@@ -41,14 +44,14 @@ const ShiftCard: React.FC<Props> = ({ data, onContextMenu, salary, currency }) =
         <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </div>
 
-      <div className="flex font-bold">
-        {dayjs(start).format("H:mm")}-{dayjs(end).format("H:mm")}
-      </div>
+      <div className="flex font-bold">{`${start} - ${end}`}</div>
 
       <div className="flex gap-2 text-sm text-color-dark-gray">
-        <p className="flex items-center gap-1">
-          <FaRegClock /> {getFormatedDuration(start, end)}
-        </p>
+        {shiftLength && (
+          <p className="flex items-center gap-1">
+            <FaRegClock /> {getMinutesToHHmm(shiftLength)}
+          </p>
+        )}
 
         {breakUnpaid && (
           <p className="flex items-center gap-1">

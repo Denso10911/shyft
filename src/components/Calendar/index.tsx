@@ -6,7 +6,6 @@ import { useLocale } from "next-intl"
 
 import "dayjs/locale/fr"
 
-import AsideModal from "@/components/AsideModal"
 import CalendarMenu from "@/components/CalendarMenu"
 import EmployeesCalendar from "@/components/EmployeesCalendar"
 
@@ -19,16 +18,6 @@ const Calendar = () => {
 
   const [calendar, setCalendar] = useState<DateNumberT[]>([])
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const modalCloseHandler = () => {
-    setIsModalOpen(false)
-  }
-
-  // const modalOpenHandler = () => {
-  //   setIsModalOpen(true)
-  // }
-
   return (
     <div
       data-page="Calendar"
@@ -37,8 +26,6 @@ const Calendar = () => {
       <CalendarMenu setCalendar={setCalendar} />
 
       {!!calendar.length && <EmployeesCalendar calendar={calendar} />}
-
-      <AsideModal isOpen={isModalOpen} closeHandler={modalCloseHandler} type="newShift" />
     </div>
   )
 }

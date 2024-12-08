@@ -2,6 +2,7 @@ import { queryOptions } from "@tanstack/react-query"
 
 import { BASE_URL } from "@/api/index"
 import { updateShiftPayloadType } from "@/api/types"
+import { shiftInterface } from "@/types"
 import { mockShiftData } from "@/utiles/dummyContents"
 
 export const shiftsApi = {
@@ -10,6 +11,21 @@ export const shiftsApi = {
       return mockShiftData
     }
     const response = await fetch(`${BASE_URL}/shifts`)
+    return response.json()
+  },
+
+  createShift: async (payload: shiftInterface) => {
+    const response = await fetch(`${BASE_URL}/shifts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`)
+    }
+
     return response.json()
   },
 
