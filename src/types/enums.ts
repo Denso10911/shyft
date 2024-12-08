@@ -44,5 +44,4 @@ export enum ShiftTimingOptions {
 export enum ShiftModalTypes {
   CREATE = "CREATE",
   EDIT = "EDIT",
-  COPY = "COPY",
 }

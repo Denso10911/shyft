@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query"
 
 import { BASE_URL } from "@/api/index"
-import { updateShiftPayloadType } from "@/api/types"
+import { editShiftPayloadType, updateShiftPayloadType } from "@/api/types"
 import { shiftInterface } from "@/types"
 import { mockShiftData } from "@/utiles/dummyContents"
 
@@ -15,6 +15,9 @@ export const shiftsApi = {
   },
 
   createShift: async (payload: shiftInterface) => {
+    if (process.env.NEXT_PUBLIC_USE_MOCK === "true") {
+      return mockShiftData.push(payload)
+    }
     const response = await fetch(`${BASE_URL}/shifts`, {
       method: "POST",
       headers: {
@@ -41,6 +44,27 @@ export const shiftsApi = {
       throw new Error(`Error: ${response.status}`)
     }
 
+    return response.json()
+  },
+
+  editShift: async (payload: editShiftPayloadType) => {
+    const response = await fetch(`${BASE_URL}/shifts/${payload.id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload.shift),
+    })
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`)
+    }
+    return response.json()
+  },
+
+  deleteShiftById: async (id: string) => {
+    const response = await fetch(`${BASE_URL}/shifts/${id}`, {
+      method: "DELETE",
+    })
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`)
+    }
     return response.json()
   },
 }

@@ -11,14 +11,14 @@ export const mockShiftData: shiftInterface[] = [
     userId: "1",
     competencies: [],
     attributes: [],
-    date: "2024-12-04",
+    date: "2024-12-09",
     start: "07:00",
     end: "15:20",
     breakPaid: 0,
     breakUnpaid: 30,
     specialCode: "specialCode",
     isShiftCompensated: true,
-    status: 0,
+    shiftVariant: 0,
     shiftType: 1,
     shiftLength: 0,
   },
@@ -27,14 +27,14 @@ export const mockShiftData: shiftInterface[] = [
     userId: "2",
     competencies: [],
     attributes: [],
-    date: "2024-12-04",
+    date: "2024-12-09",
     start: "07:00",
     end: "15:20",
     breakPaid: 0,
     breakUnpaid: 30,
     specialCode: "specialCode",
     isShiftCompensated: true,
-    status: 0,
+    shiftVariant: 0,
     shiftType: 1,
     shiftLength: 0,
   },
@@ -42,11 +42,14 @@ export const mockShiftData: shiftInterface[] = [
 
 export const shiftTypeOptions = [
   { value: ShiftType.CASH_REGISTER, label: "Cash register" },
-  { value: ShiftType.VACATION, label: "Vacation" },
-  { value: ShiftType.RESTORATION, label: "Restoration" },
   { value: ShiftType.CLOSURE, label: "Closure" },
   { value: ShiftType.TRUCK, label: "Truck" },
   { value: ShiftType.OPENING, label: "Opening" },
+]
+
+export const absenceTypeOptions = [
+  { value: ShiftType.VACATION, label: "Vacation" },
+  { value: ShiftType.RESTORATION, label: "Restoration" },
   { value: ShiftType.SICK_LEAVE, label: "Sick leave" },
 ]
 

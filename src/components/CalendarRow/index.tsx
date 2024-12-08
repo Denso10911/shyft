@@ -15,15 +15,15 @@ import { ShiftVariant } from "@/types/enums"
 type Props = {
   user: fullUserInfoInterface
   calendar: DateNumberT[]
-  handleRightClick: (e: React.MouseEvent, id: string) => void
   isUnassigned?: boolean
+  setIsModalOpen: (value: boolean) => void
 }
 
 const CalendarRow: React.FC<Props> = ({
   user: { shifts, ...userInfo },
   calendar,
-  handleRightClick,
   isUnassigned,
+  setIsModalOpen,
 }) => {
   return (
     <div className="grid min-h-[130px] min-w-[240px] shrink-0 grid-cols-[220px_repeat(7,_1fr)]">
@@ -47,14 +47,14 @@ const CalendarRow: React.FC<Props> = ({
             className={"flex min-w-[240px] flex-col gap-2 border-b border-r p-4"}
           >
             {userShifts.map(shift => {
-              if (shift.status !== ShiftVariant.SHIFT) {
+              if (shift.shiftVariant !== ShiftVariant.SHIFT) {
                 return (
                   <Draggable id={`${userInfo.id}/${shift.id}`} key={`${userInfo.id}/${shift.id}`}>
                     <AbsenceCard
                       data={shift}
-                      onContextMenu={handleRightClick}
                       salary={userInfo.salary}
                       currency={userInfo.currency}
+                      setIsModalOpen={setIsModalOpen}
                     />
                   </Draggable>
                 )
@@ -63,9 +63,9 @@ const CalendarRow: React.FC<Props> = ({
                 <Draggable id={`${userInfo.id}/${shift.id}`} key={`${userInfo.id}/${shift.id}`}>
                   <ShiftCard
                     data={shift}
-                    onContextMenu={handleRightClick}
                     salary={userInfo.salary}
                     currency={userInfo.currency}
+                    setIsModalOpen={setIsModalOpen}
                   />
                 </Draggable>
               )

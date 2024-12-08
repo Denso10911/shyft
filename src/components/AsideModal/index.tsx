@@ -14,27 +14,32 @@ Modal.setAppElement("body")
 
 type Props = {
   isOpen: boolean
-  closeHandler: () => void
+  setIsModalOpen: (value: boolean) => void
 }
 
-const AsideModal: React.FC<Props> = ({ isOpen, closeHandler }) => {
+const AsideModal: React.FC<Props> = ({ isOpen, setIsModalOpen }) => {
   const t = useTranslations("ShiftModal")
 
-  const shiftModalType = useShiftStore(state => state.shiftModalType)
+  const { shiftModalType, cleanSelectedShift, cleanSelectedDate } = useShiftStore(state => state)
 
   const modalTitles = {
     [ShiftModalTypes.CREATE]: t("titles.create"),
     [ShiftModalTypes.EDIT]: t("titles.edit"),
-    [ShiftModalTypes.COPY]: t("titles.create"),
+  }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+    cleanSelectedShift()
+    cleanSelectedDate()
   }
 
   return (
-    <Modal isOpen={isOpen} style={customModalStyles} onRequestClose={closeHandler} className="">
+    <Modal isOpen={isOpen} style={customModalStyles} onRequestClose={handleModalClose} className="">
       <div className="h-full font-[family-name:var(--font-geist-sans)]">
         <div className="flex items-center gap-3 border-b px-6 py-4">
           <button
             onClick={() => {
-              closeHandler()
+              handleModalClose()
             }}
             className=" h-4 w-4"
           >
@@ -42,7 +47,7 @@ const AsideModal: React.FC<Props> = ({ isOpen, closeHandler }) => {
           </button>
           <h2 className="text-xl font-bold">{modalTitles[shiftModalType]}</h2>
         </div>
-        <ShiftForm closeHandler={closeHandler} />
+        <ShiftForm closeHandler={handleModalClose} />
       </div>
     </Modal>
   )

@@ -42,7 +42,7 @@ const Button: React.FC<Props> = ({
       type={type}
       onClick={onClick}
       className={cn(
-        "block font-medium",
+        "block cursor-pointer font-medium",
         variantStyles[variant],
         sizeStyles[size],
         widthStyles[width],

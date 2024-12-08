@@ -40,8 +40,16 @@ const Components = () => {
         <div className="flex flex-col gap-2 rounded-[20px] border p-4">
           <div className="flex gap-1">
             {mockShiftData.map((data, index) => {
-              if (data.status === ShiftVariant.SHIFT) {
-                return <ShiftCard key={index} data={data} currency={840} salary={"123"} />
+              if (data.shiftVariant === ShiftVariant.SHIFT) {
+                return (
+                  <ShiftCard
+                    key={index}
+                    data={data}
+                    currency={840}
+                    salary={"123"}
+                    setIsModalOpen={() => {}}
+                  />
+                )
               }
             })}
           </div>
@@ -52,8 +60,16 @@ const Components = () => {
         <div className="flex flex-col gap-2 rounded-[20px] border p-4">
           <div className="flex gap-1">
             {mockShiftData.map((data, index) => {
-              if (data.status !== ShiftVariant.SHIFT) {
-                return <AbsenceCard key={index} data={data} currency={840} salary={"123"} />
+              if (data.shiftVariant !== ShiftVariant.SHIFT) {
+                return (
+                  <AbsenceCard
+                    key={index}
+                    data={data}
+                    currency={840}
+                    salary={"123"}
+                    setIsModalOpen={() => {}}
+                  />
+                )
               }
             })}
           </div>

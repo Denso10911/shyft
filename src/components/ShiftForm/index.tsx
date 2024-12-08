@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form"
 import Select from "react-select"
 import TimeField from "react-simple-timefield"
 import { toast } from "react-toastify"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useTranslations } from "next-intl"
 import { v1 as uuidv1 } from "uuid"
@@ -14,13 +14,16 @@ import InputLabelWrapper from "@/components/InputLabelWrapper"
 import Checkbox from "../Checkbox"
 
 import { shiftsApi } from "@/api/shifts"
+import { editShiftPayloadType } from "@/api/types"
+import { getUsersOptions } from "@/api/users"
 import { useShiftStore } from "@/store/shiftStore"
 import { shiftInterface, userInterface } from "@/types"
-import { ShiftTimingOptions, ShiftVariant } from "@/types/enums"
-import { mockUserOptions, mockUsersData } from "@/utiles/dummyContents"
+import { ShiftModalTypes, ShiftTimingOptions, ShiftType, ShiftVariant } from "@/types/enums"
 import {
+  absenceTypeOptions,
   attributesOptions,
   competenciesOptions,
+  mockUserOptions,
   shiftTimingOptions,
   shiftTypeOptions,
   specialCodeOptions,
@@ -37,14 +40,28 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
   const t = useTranslations("Form")
   const queryClient = useQueryClient()
 
-  const { selectedShift, selectedDate } = useShiftStore(state => state)
+  const { selectedShift, selectedDate, shiftModalType } = useShiftStore(state => state)
 
   const [template, setTemplate] = useState<ShiftTimingOptions | null>(null)
   const [exceedingHours, setExceedingHours] = useState(0)
   const [userData, setUserData] = useState<userInterface | null>(null)
 
-  const mutation = useMutation({
+  const { data: usersList } = useSuspenseQuery<userInterface[]>(getUsersOptions())
+
+  const createShiftMutation = useMutation({
     mutationFn: (payload: shiftInterface) => shiftsApi.createShift(payload),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["shifts"] })
+      toast.success("Shift added successfully")
+      closeHandler()
+    },
+    onError: () => {
+      toast.error(t("mutationError"))
+    },
+  })
+
+  const editShiftMutation = useMutation({
+    mutationFn: (payload: editShiftPayloadType) => shiftsApi.editShift(payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["shifts"] })
       toast.success("Shift added successfully")
@@ -67,32 +84,28 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
       userId: selectedShift?.userId || "",
       competencies: selectedShift?.competencies || [],
       attributes: selectedShift?.attributes || [],
-      start: selectedShift?.start || "",
-      end: selectedShift?.end || "",
+      start: selectedShift?.start || "00:00",
+      end: selectedShift?.end || "00:00",
       breakPaid: selectedShift?.breakPaid || null,
       breakUnpaid: selectedShift?.breakUnpaid || null,
       specialCode: selectedShift?.specialCode || null,
       isShiftCompensated: !!selectedShift?.isShiftCompensated,
-      status: selectedShift?.status || 0,
+      shiftVariant: selectedShift?.shiftVariant || 0,
       shiftLength: selectedShift?.shiftLength || null,
     },
   })
 
-  const formValues = watch(["userId", "start", "end"])
+  const [start, end, shiftVariant] = watch(["start", "end", "shiftVariant"])
+
+  const shiftOptionsByShiftVariant =
+    shiftVariant === ShiftVariant.ABSENCE ? absenceTypeOptions : shiftTypeOptions
 
   useEffect(() => {
-    const [, start, end] = formValues
-
     if (userData && start && end) {
-      const startDate = dayjs(`2024-12-06T${start}:00`)
-      let endDate = dayjs(`2024-12-06T${end}:00`)
+      const startDate = getHHmmToMinutes(start)
+      const endDate = getHHmmToMinutes(end)
 
-      if (endDate.isBefore(startDate)) {
-        endDate = endDate.add(1, "day")
-      }
-
-      const diffInMinutes = endDate.diff(startDate, "minute")
-      const totalHours = diffInMinutes / 60
+      const totalHours = (startDate - endDate) / 60
 
       setValue("shiftLength", totalHours)
 
@@ -102,35 +115,41 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
         setExceedingHours(0)
       }
     }
-  }, [formValues])
+  }, [start, end])
 
   const onSubmit = (dataToSubmit: Omit<shiftInterface, "id" | "date">) => {
-    const shiftId = selectedShift ? selectedShift.id : uuidv1()
     const shiftDate = selectedShift ? selectedShift.date : selectedDate
 
     const payload: shiftInterface = {
       ...dataToSubmit,
-      id: shiftId,
+      id: shiftModalType === ShiftModalTypes.CREATE ? uuidv1() : selectedShift!.id,
       date: shiftDate || dayjs().format("YYYY-MM-DD"),
       shiftLength: getHHmmToMinutes(dataToSubmit.end) - getHHmmToMinutes(dataToSubmit.start),
     }
 
-    mutation.mutate(payload)
+    if (shiftModalType === ShiftModalTypes.CREATE) {
+      createShiftMutation.mutate(payload)
+    }
+
+    if (shiftModalType === ShiftModalTypes.EDIT) {
+      editShiftMutation.mutate({ id: selectedShift!.id, shift: payload })
+    }
   }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex h-[calc(100vh-61px)] flex-1 flex-col gap-4 p-6"
+      className="flex h-[calc(100vh-63px)] flex-1 flex-col gap-4 p-6"
     >
       <div className="flex gap-0 overflow-hidden rounded">
         <Button
           type="button"
           onClick={() => {
-            setValue("status", ShiftVariant.SHIFT)
+            setValue("shiftVariant", ShiftVariant.SHIFT)
+            setValue("shiftType", ShiftType.CASH_REGISTER)
           }}
           size="sm"
-          variant="gray"
+          variant={shiftVariant === ShiftVariant.SHIFT ? "gray" : "light"}
           width="full"
         >
           {t("buttons.shift")}
@@ -138,10 +157,11 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
         <Button
           type="button"
           onClick={() => {
-            setValue("status", ShiftVariant.ABSENCE)
+            setValue("shiftVariant", ShiftVariant.ABSENCE)
+            setValue("shiftType", ShiftType.VACATION)
           }}
           size="sm"
-          variant="light"
+          variant={shiftVariant === ShiftVariant.ABSENCE ? "gray" : "light"}
           width="full"
         >
           {t("buttons.absence")}
@@ -154,12 +174,13 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
+              isClearable
               styles={selectStyles}
-              options={shiftTypeOptions}
+              options={shiftOptionsByShiftVariant}
               onChange={selectedOption => {
                 onChange(selectedOption?.value)
               }}
-              value={shiftTypeOptions.find(option => option.value === value)}
+              value={shiftOptionsByShiftVariant.find(option => option.value === value)}
             />
           )}
         />
@@ -171,12 +192,12 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
+              isClearable
               styles={selectStyles}
               options={mockUserOptions}
               onChange={selectedOption => {
                 onChange(selectedOption?.value || null)
-
-                const user = mockUsersData.find(item => item.id === selectedOption?.value)
+                const user = usersList.find(item => item.id === selectedOption?.value)
                 setUserData(user || null)
               }}
               value={mockUserOptions.find(option => option.value === value)}
@@ -322,6 +343,7 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
+              isClearable
               styles={selectStyles}
               options={specialCodeOptions}
               onChange={selectedOption => onChange(selectedOption?.value || null)}
@@ -356,12 +378,14 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
           </ul>
         )}
 
-        <div className=" flex justify-between gap-2">
+        <div className="flex justify-between gap-2">
           <Button type="button" variant="red" size="md" width="full" onClick={closeHandler} rounded>
             {t("buttons.cancel")}
           </Button>
           <Button type="submit" variant="green" size="md" width="full" rounded>
-            {t("buttons.addShift")}
+            {shiftModalType === ShiftModalTypes.CREATE
+              ? t("buttons.addShift")
+              : t("buttons.editShift")}
           </Button>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { FaPlus } from "react-icons/fa"
 import { toast } from "react-toastify"
 import { DndContext, DragEndEvent } from "@dnd-kit/core"
 import { restrictToFirstScrollableAncestor, restrictToWindowEdges } from "@dnd-kit/modifiers"
@@ -10,19 +9,16 @@ import weekday from "dayjs/plugin/weekday"
 import { useTranslations } from "next-intl"
 
 import AsideModal from "@/components/AsideModal"
-import CalendarRow from "@/components/CalendarRow"
-import ContextMenuContainer from "@/components/ContextMenuContainer"
-import ShiftContextMenu from "@/components/ShiftContextMenu"
+import CalendarBody from "@/components/CalendarBody"
+import CalendarHeader from "@/components/CalendarHeader"
 
 import { getShiftsOptions, shiftsApi } from "@/api/shifts"
 import { updateShiftPayloadType } from "@/api/types"
 import { getUsersOptions } from "@/api/users"
-import useCalendarShiftContextMenu from "@/hooks/useCalendarShiftContextMenu"
 import useCalendarShiftSensors from "@/hooks/useCalendarShiftSensors"
-import { useShiftStore } from "@/store/shiftStore"
 import { fullUserInfoInterface, shiftInterface, userInterface } from "@/types"
 import { DateNumberT } from "@/types/calendar"
-import { emptyUserData } from "@/utiles/dummyContents"
+import { updateUserListWithShifts } from "@/utiles/updateUserListWithShifts"
 dayjs.extend(weekday)
 
 interface Props {
@@ -37,8 +33,6 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [unassignedShifts, setUnassignedShifts] = useState<shiftInterface[]>([])
 
-  const setSelectedDate = useShiftStore(state => state.setSelectedDate)
-
   const { data: usersList } = useSuspenseQuery<userInterface[]>(getUsersOptions())
   const { data: shiftsList } = useSuspenseQuery<shiftInterface[]>(getShiftsOptions())
 
@@ -52,7 +46,6 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
   })
 
   const sensors = useCalendarShiftSensors()
-  const { contextMenu, handleRightClick, handleCloseContextMenu } = useCalendarShiftContextMenu()
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
@@ -96,66 +89,40 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
       })
     } else {
       setUsersListWithShifts(prevUsers => {
-        return prevUsers.map(user => {
-          if (user.id === activeUserId) {
-            // If the same user then update shifts
-            const updatedShifts = user.shifts.map(shift => {
-              if (shift.id === activeShiftId) {
-                //  update the shift date if it is moved
-                return {
-                  ...shift,
-                  date: overDate,
-                }
-              }
-              return shift
-            })
+        const draggedShift = prevUsers
+          .find(user => user.id === activeUserId)
+          ?.shifts.find(shift => shift.id === activeShiftId)
 
-            // check if the shift was reassigned
-            if (overUserId === activeUserId) {
-              return {
-                ...user,
-                shifts: updatedShifts,
-              }
-            }
-
-            // remove shift if we reassigned it
-            return {
-              ...user,
-              shifts: user.shifts.filter(shift => shift.id !== activeShiftId),
-            }
+        if (draggedShift) {
+          const newShift = {
+            ...draggedShift,
+            date: overDate,
+            userId: overUserId,
           }
 
-          // if this is the user receiving the shift
-          if (user.id === overUserId) {
-            const activeUser = prevUsers.find(u => u.id === activeUserId)
-            const movedShift = activeUser?.shifts.find(shift => shift.id === activeShiftId)
-
-            if (movedShift) {
-              return {
-                ...user,
-                shifts: [
-                  ...user.shifts,
-                  {
-                    ...movedShift,
-                    date: overDate,
-                  },
-                ],
-              }
+          return prevUsers.map(user => {
+            if (user.id === activeUserId) {
+              user.shifts = user.shifts.filter(shift => shift.id !== activeShiftId)
             }
-          }
+            if (user.id === overUserId) {
+              user.shifts = [...user.shifts, newShift]
+            }
+            return user
+          })
+        }
 
-          return user
-        })
+        return prevUsers
+
+        // return updateUserListWithShifts(
+        //   prevUsers,
+        //   activeUserId,
+        //   activeShiftId,
+        //   overUserId,
+        //   overDate
+        // )
       })
     }
   }
-
-  const handleCreateClick = (date: string) => {
-    setSelectedDate(date)
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {}
 
   useEffect(() => {
     const usersWithShifts = usersList.map(user => {
@@ -178,79 +145,25 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
     <>
       <div
         data-component="EmployeesCalendar"
-        className={cn("relative max-h-[calc(100vh-110px)] overflow-auto bg-color-white")}
+        className={cn(" max-h-[calc(100vh-110px)] overflow-auto bg-color-white")}
       >
         <DndContext
           onDragEnd={handleDragEnd}
           sensors={sensors}
           modifiers={[restrictToFirstScrollableAncestor, restrictToWindowEdges]}
         >
-          <div className="relative grid grid-cols-[220px_repeat(7,_1fr)]">
-            <div
-              className={cn(
-                "sticky left-0 z-20 flex items-center justify-center border bg-[#f9f9f9] py-4 "
-              )}
-            >
-              <div className="sticky left-0 w-full px-4">Search</div>
-            </div>
-            {calendar.length > 0 &&
-              calendar.map((el, i) => {
-                const calendarDate = `${el.year}-${el.month}-${el.day}`
-                const dayOfWeek = dayjs(calendarDate).format("ddd")
-                const isToday = dayjs(calendarDate).isSame(dayjs(), "day") // Check if the date is today
+          <CalendarHeader calendar={calendar} setIsModalOpen={setIsModalOpen} />
 
-                return (
-                  <div
-                    className={cn(
-                      "d group relative flex min-w-[240px] shrink-0 cursor-pointer flex-col items-center justify-center border-b border-r border-t transition ",
-                      isToday ? "bg-[#e3e6f1]" : "bg-[#f9f9f9]"
-                    )}
-                    key={i}
-                    onClick={() => handleCreateClick(calendarDate)}
-                  >
-                    <div className="absolute right-2 top-2 text-sm text-color-gray opacity-0 transition group-hover:opacity-100">
-                      <FaPlus />
-                    </div>
-                    <div className="font-bold capitalize transition group-hover:scale-105">{`${dayOfWeek.replace(".", "")} ${el.day}`}</div>
-                  </div>
-                )
-              })}
-          </div>
-          {unassignedShifts.length > 0 && (
-            <CalendarRow
-              key="empty row"
-              user={{
-                ...emptyUserData,
-                shifts: unassignedShifts,
-              }}
-              isUnassigned
-              calendar={calendar}
-              handleRightClick={handleRightClick}
-            />
-          )}
-
-          {usersListWithShifts.map(user => (
-            <CalendarRow
-              key={user.id}
-              user={user}
-              calendar={calendar}
-              handleRightClick={handleRightClick}
-            />
-          ))}
+          <CalendarBody
+            calendar={calendar}
+            unassignedShifts={unassignedShifts}
+            usersListWithShifts={usersListWithShifts}
+            setIsModalOpen={setIsModalOpen}
+          />
         </DndContext>
       </div>
 
-      {contextMenu.visible && (
-        <ContextMenuContainer
-          top={contextMenu.y}
-          left={contextMenu.x}
-          handleClose={handleCloseContextMenu}
-        >
-          <ShiftContextMenu />
-        </ContextMenuContainer>
-      )}
-
-      <AsideModal isOpen={isModalOpen} closeHandler={handleCloseModal} />
+      <AsideModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </>
   )
 }

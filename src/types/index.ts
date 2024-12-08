@@ -26,7 +26,7 @@ export interface shiftInterface {
   specialCode: string | null
   isShiftCompensated: boolean
   shiftType: ShiftType | null
-  status: ShiftVariant
+  shiftVariant: ShiftVariant
   shiftLength: number | null
 }
 

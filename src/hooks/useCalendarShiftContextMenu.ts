@@ -1,14 +1,9 @@
 import React, { useState } from "react"
 
-type ContextMenu = {
-  visible: boolean
-  x: number
-  y: number
-  id: string
-}
+import { contextMenuType } from "@/types/types"
 
 const useCalendarShiftContextMenu = () => {
-  const [contextMenu, setContextMenu] = useState<ContextMenu>({
+  const [contextMenu, setContextMenu] = useState<contextMenuType>({
     visible: false,
     x: 0,
     y: 0,

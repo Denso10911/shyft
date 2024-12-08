@@ -5,12 +5,24 @@ import { FaTimesCircle } from "react-icons/fa"
 import cn from "classnames"
 import { useTranslations } from "next-intl"
 
-const ShiftContextMenu = () => {
+type Props = {
+  onDelete: () => void
+  onEdit: () => void
+  onCopy: () => void
+}
+
+const ShiftContextMenu: React.FC<Props> = ({ onDelete, onEdit, onCopy }) => {
   const t = useTranslations("ShiftContextMenu")
 
-  const handleCopyClick = () => {}
-  const handleEditClick = () => {}
-  const handleDeleteClick = () => {}
+  const handleCopyClick = () => {
+    onCopy()
+  }
+  const handleEditClick = () => {
+    onEdit()
+  }
+  const handleDeleteClick = () => {
+    onDelete()
+  }
 
   const menuItems = [
     { title: t("copy"), icon: <FaRegCopy />, onClick: handleCopyClick },

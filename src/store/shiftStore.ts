@@ -10,6 +10,7 @@ type ShiftStore = {
 
   setSelectedShift: (shift: shiftInterface) => void
   setSelectedDate: (date: string) => void
+  setShiftModalType: (type: ShiftModalTypes) => void
 
   cleanSelectedShift: () => void
   cleanSelectedDate: () => void
@@ -22,6 +23,7 @@ export const useShiftStore = create<ShiftStore>(set => ({
 
   setSelectedShift: (shift: shiftInterface) => set({ selectedShift: shift }),
   setSelectedDate: (date: string) => set({ selectedDate: date }),
+  setShiftModalType: (type: ShiftModalTypes) => set({ shiftModalType: type }),
 
   cleanSelectedShift: () => set({ selectedShift: null }),
   cleanSelectedDate: () => set({ selectedDate: null }),
