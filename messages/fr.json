@@ -69,7 +69,14 @@
       "user": "Sélectionnez un utilisateur",
       "shortcuts": "Sélectionnez des raccourcis"
     },
-    "validation": {}
+    "validation": {
+      "userRequired": "Veuillez choisir un utilisateur"
+    },
+    "result": {
+      "successCreated": "Shift créé avec successe",
+      "successEdited": "Shift modifié avec successe",
+      "error": "Une erreur est survenue"
+    }
   },
 
   "ShiftModal": {

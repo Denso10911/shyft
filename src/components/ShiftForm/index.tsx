@@ -34,11 +34,11 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
     mutationFn: (payload: shiftInterface) => shiftsApi.createShift(payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["shifts"] })
-      toast.success("Shift added successfully")
+      toast.success(t("result.successCreated"))
       closeHandler()
     },
     onError: () => {
-      toast.error(t("mutationError"))
+      toast.error(t("result.error"))
     },
   })
 
@@ -46,11 +46,11 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
     mutationFn: (payload: editShiftPayloadType) => shiftsApi.editShift(payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["shifts"] })
-      toast.success("Shift added successfully")
+      toast.success(t("result.successEdited"))
       closeHandler()
     },
     onError: () => {
-      toast.error(t("mutationError"))
+      toast.error(t("result.error"))
     },
   })
 

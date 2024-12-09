@@ -9,8 +9,8 @@ import weekday from "dayjs/plugin/weekday"
 import { useTranslations } from "next-intl"
 
 import AsideModal from "@/components/AsideModal"
-import CalendarBody from "@/components/CalendarBody"
 import CalendarHeader from "@/components/CalendarHeader"
+import CalendarRow from "@/components/CalendarRow"
 
 import { getShiftsOptions, shiftsApi } from "@/api/shifts"
 import { updateShiftPayloadType } from "@/api/types"
@@ -25,7 +25,6 @@ const CalendarContainer = () => {
 
   const [usersListWithShifts, setUsersListWithShifts] = useState<fullUserInfoInterface[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [unassignedShifts, setUnassignedShifts] = useState<shiftInterface[]>([])
 
   const { data: usersList } = useSuspenseQuery<userInterface[]>(getUsersOptions())
   const { data: shiftsList } = useSuspenseQuery<shiftInterface[]>(getShiftsOptions())
@@ -43,10 +42,11 @@ const CalendarContainer = () => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    const activeElementId = active.id as string
-    const overElementId = over?.id as string
 
-    if (!activeElementId || !overElementId) return
+    if (!over || !active) return
+
+    const activeElementId = `${active.id}`
+    const overElementId = `${over.id}`
 
     const [activeUserId, activeShiftId] = activeElementId.split("/")
     const [overUserId, overDate] = overElementId.split("/")
@@ -63,51 +63,31 @@ const CalendarContainer = () => {
       mutation.mutate(payload)
     }
 
-    if (activeUserId === "-1") {
-      setUsersListWithShifts(prevUsers => {
+    setUsersListWithShifts(prevUsers => {
+      const draggedShift = prevUsers
+        .find(user => user.id === activeUserId)
+        ?.shifts.find(shift => shift.id === activeShiftId)
+
+      if (draggedShift) {
+        const newShift = {
+          ...draggedShift,
+          date: overDate,
+          userId: overUserId,
+        }
+
         return prevUsers.map(user => {
+          if (user.id === activeUserId) {
+            user.shifts = user.shifts.filter(shift => shift.id !== activeShiftId)
+          }
           if (user.id === overUserId) {
-            const newShift = unassignedShifts.find(shift => shift.id === activeShiftId)
-            if (newShift) {
-              setUnassignedShifts(prevShifts =>
-                prevShifts.filter(shift => shift.id !== activeShiftId)
-              )
-              return {
-                ...user,
-                shifts: [...user.shifts, { ...newShift, userId: overUserId, date: overDate }],
-              }
-            }
+            user.shifts = [...user.shifts, newShift]
           }
           return user
         })
-      })
-    } else {
-      setUsersListWithShifts(prevUsers => {
-        const draggedShift = prevUsers
-          .find(user => user.id === activeUserId)
-          ?.shifts.find(shift => shift.id === activeShiftId)
+      }
 
-        if (draggedShift) {
-          const newShift = {
-            ...draggedShift,
-            date: overDate,
-            userId: overUserId,
-          }
-
-          return prevUsers.map(user => {
-            if (user.id === activeUserId) {
-              user.shifts = user.shifts.filter(shift => shift.id !== activeShiftId)
-            }
-            if (user.id === overUserId) {
-              user.shifts = [...user.shifts, newShift]
-            }
-            return user
-          })
-        }
-
-        return prevUsers
-      })
-    }
+      return prevUsers
+    })
   }
 
   useEffect(() => {
@@ -117,12 +97,6 @@ const CalendarContainer = () => {
         shifts: shiftsList.filter(shift => shift.userId === user.id),
       }
     })
-
-    const unassignedShifts = shiftsList.filter(shift => !shift.userId)
-
-    if (unassignedShifts.length) {
-      setUnassignedShifts(unassignedShifts)
-    }
 
     setUsersListWithShifts(usersWithShifts)
   }, [shiftsList])
@@ -137,11 +111,9 @@ const CalendarContainer = () => {
         >
           <CalendarHeader setIsModalOpen={setIsModalOpen} />
 
-          <CalendarBody
-            unassignedShifts={unassignedShifts}
-            usersListWithShifts={usersListWithShifts}
-            setIsModalOpen={setIsModalOpen}
-          />
+          {usersListWithShifts.map(user => (
+            <CalendarRow key={user.id} user={user} setIsModalOpen={setIsModalOpen} />
+          ))}
         </DndContext>
       </div>
 

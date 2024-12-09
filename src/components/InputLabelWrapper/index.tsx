@@ -16,7 +16,7 @@ const InputLabelWrapper: React.FC<Props> = ({ label, error, children, className,
         {label}
       </span>
       {children}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="text-xs text-color-red">{error}</p>}
     </label>
   )
 }

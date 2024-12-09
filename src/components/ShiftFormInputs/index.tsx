@@ -69,10 +69,13 @@ const ShiftFormInputs: React.FC<Props> = ({
         />
       </InputLabelWrapper>
 
-      <InputLabelWrapper label={t("labels.user")} error={errors?.userId?.message}>
+      <InputLabelWrapper label={t("labels.user")} error={errors?.userId?.message} required>
         <Controller
           name="userId"
           control={control}
+          rules={{
+            required: t("validation.userRequired"),
+          }}
           render={({ field: { onChange, value } }) => (
             <Select
               isClearable
