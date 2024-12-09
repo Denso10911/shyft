@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shift Management System
 
-## Getting Started
+This web application is a shift management system designed for managing employee shifts in an easy and intuitive way. The system allows users to:
 
-First, run the development server:
+- View and manage shifts: Display a weekly schedule with shift details, including start and end times, employee names, and shift types.
+- Drag & Drop functionality: Easily move shifts between different days and users.
+- Context menu: Right-click on any shift to access options like copy, create contract, and delete.
+- Modals: View and edit detailed shift information using modals.
+- Dynamic data handling: The application updates in real-time as shifts are moved or modified.
+- Localization: Supports multiple languages (English and French) for global users.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Before you get started, ensure you have the following installed:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js (version 14 or later)
+- npm package manager
+## Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To install and set up the project, follow these steps:
 
-## Learn More
+1. Clone the repository:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   https://github.com/Denso10911/shyft.git
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Navigate to the project directory:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   cd shyft
+   ```
 
-## Deploy on Vercel
+3. Install the dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Usage
+
+### Development
+
+1. To run the project in development mode, use the following command:
+
+   ```bash
+   npm run dev
+   ```
+
+2. Start the JSON server to serve mock API data:
+
+   ```bash
+   npm run server
+   ```
+
+This will start the development server. Open your browser and go to `http://localhost:3000`.
+
+
+
+### Mock Development
+
+To run the development server with mock local data:
+
+   ```bash
+   npm run dev-mock
+   ```
+
+## Key Technologies
+
+- **React**: A JavaScript library for building user interfaces.
+- **Next.js**: A React framework for server-side rendering and static site generation.
+- **Zustand**: A state management library.
+- **React Query**: For fetching and managing server state.
+- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
+- **React Hook Form**: For handling form validation and state.
+- **JSON Server**: To create a mock REST API for development.
