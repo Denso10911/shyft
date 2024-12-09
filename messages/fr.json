@@ -89,5 +89,13 @@
   "CalendarMenu": {
     "week": "Semaine",
     "plus": "Plus"
+  },
+
+  "Navigation": {
+    "shifts": "Horaires",
+    "work": "Pointges",
+    "team": "Equipe",
+    "reports": "Rapports",
+    "documents": "Documents"
   }
 }

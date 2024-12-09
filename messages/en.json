@@ -92,5 +92,13 @@
   "CalendarMenu": {
     "week": "Week",
     "plus": "Plus"
+  },
+
+  "Navigation": {
+    "shifts": "Shifts",
+    "work": "Work hours",
+    "team": "Team",
+    "reports": "Reports",
+    "documents": "Documents"
   }
 }

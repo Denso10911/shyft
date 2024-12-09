@@ -5,16 +5,19 @@ import { FaFilePdf } from "react-icons/fa"
 import { FaRegClock } from "react-icons/fa"
 import cn from "classnames"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 
 const pages = [
-  { id: 1, label: "Shifts", link: "#", icon: FaRegCalendarAlt },
-  { id: 2, label: "Work hours", link: "#", icon: FaRegClock },
-  { id: 3, label: "Team", link: "#", icon: FaRegUser },
-  { id: 4, label: "Reports", link: "#", icon: FaChartBar },
-  { id: 5, label: "Documents", link: "#", icon: FaFilePdf },
+  { id: 1, label: "shifts", link: "#", icon: FaRegCalendarAlt },
+  { id: 2, label: "work", link: "#", icon: FaRegClock },
+  { id: 3, label: "team", link: "#", icon: FaRegUser },
+  { id: 4, label: "reports", link: "#", icon: FaChartBar },
+  { id: 5, label: "documents", link: "#", icon: FaFilePdf },
 ]
 
 const Nav = () => {
+  const t = useTranslations("Navigation")
+
   return (
     <nav>
       <ul className="flex gap-4">
@@ -24,16 +27,16 @@ const Nav = () => {
               href={page.link}
               className={cn(
                 page.id === 1 ? "bg-color-dark-green text-color-white" : "",
-                "group flex items-center gap-2 rounded px-4 py-2 uppercase transition-colors duration-300 hover:bg-color-dark-green hover:text-color-white"
+                "hover:bg-color-dark-green group flex items-center gap-2 rounded px-4 py-2 uppercase transition-colors duration-300 hover:text-color-white"
               )}
             >
               <page.icon
                 className={cn(
                   page.id === 1 ? "fill-color-white" : "",
-                  "h-4 w-4 fill-color-dark-green text-color-dark-green transition-colors duration-300 group-hover:fill-color-white"
+                  "fill-color-dark-green text-color-dark-green h-4 w-4 transition-colors duration-300 group-hover:fill-color-white"
                 )}
               />
-              {page.label}
+              {t(page.label)}
             </Link>
           </li>
         ))}

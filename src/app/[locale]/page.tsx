@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="min-h-screen bg-[#f2f3f9] p-4 font-[family-name:var(--font-geist-sans)] accent-neutral-400">
+      <div className="min-h-[calc(100vh-64px)] bg-[#f2f3f9] p-4 font-[family-name:var(--font-geist-sans)] accent-neutral-400">
         <Calendar />
       </div>
     </HydrationBoundary>
