@@ -20,7 +20,8 @@ type Props = {
 const AsideModal: React.FC<Props> = ({ isOpen, setIsModalOpen }) => {
   const t = useTranslations("ShiftModal")
 
-  const { shiftModalType, cleanSelectedShift, cleanSelectedDate } = useShiftStore(state => state)
+  const { shiftModalType, cleanSelectedShift, cleanSelectedDate, cleanSelectedUser } =
+    useShiftStore(state => state)
 
   const modalTitles = {
     [ShiftModalTypes.CREATE]: t("titles.create"),
@@ -31,6 +32,7 @@ const AsideModal: React.FC<Props> = ({ isOpen, setIsModalOpen }) => {
     setIsModalOpen(false)
     cleanSelectedShift()
     cleanSelectedDate()
+    cleanSelectedUser()
   }
 
   return (

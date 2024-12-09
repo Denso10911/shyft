@@ -25,7 +25,11 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
   const t = useTranslations("Form")
   const queryClient = useQueryClient()
 
-  const { selectedShift, selectedDate, shiftModalType } = useShiftStore(state => state)
+  const { selectedShift, selectedDate, shiftModalType, selectedUser } = useShiftStore(
+    state => state
+  )
+
+  console.log(selectedDate, "selectedDate")
 
   const [exceedingHours, setExceedingHours] = useState(0)
   const [userData, setUserData] = useState<userInterface | null>(null)
@@ -63,7 +67,7 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
   } = useForm<Omit<shiftInterface, "id">>({
     defaultValues: {
       shiftType: selectedShift?.shiftType || null,
-      userId: selectedShift?.userId || "",
+      userId: selectedShift?.userId || selectedUser || "",
       competencies: selectedShift?.competencies || [],
       attributes: selectedShift?.attributes || [],
       start: selectedShift?.start || "00:00",
@@ -98,12 +102,21 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
 
   const onSubmit = (dataToSubmit: Omit<shiftInterface, "id" | "date">) => {
     const shiftDate = selectedShift ? selectedShift.date : selectedDate
+    console.log(shiftDate, "shiftDate")
+
+    const shiftStartMinutes = getHHmmToMinutes(dataToSubmit.start)
+    const shiftEndMinutes = getHHmmToMinutes(dataToSubmit.end)
+
+    const shiftLength =
+      shiftEndMinutes < shiftStartMinutes
+        ? shiftEndMinutes + 1440 - shiftStartMinutes
+        : shiftEndMinutes - shiftStartMinutes
 
     const payload: shiftInterface = {
       ...dataToSubmit,
       id: shiftModalType === ShiftModalTypes.CREATE ? uuidv1() : selectedShift!.id,
       date: shiftDate || dayjs().format("YYYY-MM-DD"),
-      shiftLength: getHHmmToMinutes(dataToSubmit.end) - getHHmmToMinutes(dataToSubmit.start),
+      shiftLength,
     }
 
     if (shiftModalType === ShiftModalTypes.CREATE) {

@@ -6,7 +6,6 @@ import { useLocale } from "next-intl"
 
 import { useCalendarStore } from "@/store/calendarStore"
 dayjs.extend(isoWeek)
-
 const CalendarMenu = () => {
   const locale = useLocale()
 

@@ -13,7 +13,7 @@ This web application is a shift management system designed for managing employee
 
 Before you get started, ensure you have the following installed:
 
-- Node.js (version 14 or later)
+- Node.js (version 20 or later)
 - npm package manager
 ## Installation
 

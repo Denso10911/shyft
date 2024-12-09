@@ -1,4 +1,5 @@
 import React from "react"
+import { FaCalendarPlus } from "react-icons/fa"
 import cn from "classnames"
 import dayjs from "dayjs"
 
@@ -9,21 +10,23 @@ import ShiftCard from "@/components/ShiftCard"
 import UserCard from "@/components/UserCard"
 
 import { useCalendarStore } from "@/store/calendarStore"
+import { useShiftStore } from "@/store/shiftStore"
 import { fullUserInfoInterface } from "@/types"
 import { ShiftVariant } from "@/types/enums"
-
 type Props = {
   user: fullUserInfoInterface
-  isUnassigned?: boolean
   setIsModalOpen: (value: boolean) => void
 }
 
-const CalendarRow: React.FC<Props> = ({
-  user: { shifts, ...userInfo },
-  isUnassigned,
-  setIsModalOpen,
-}) => {
+const CalendarRow: React.FC<Props> = ({ user: { shifts, ...userInfo }, setIsModalOpen }) => {
   const calendar = useCalendarStore(state => state.calendar)
+  const { setSelectedDate, setSelectedUser } = useShiftStore(state => state)
+
+  const handleAddClick = (calendarDate: string) => {
+    setSelectedDate(calendarDate)
+    setSelectedUser(userInfo.id)
+    setIsModalOpen(true)
+  }
 
   return (
     <div className="grid min-h-[130px] min-w-[240px] shrink-0 grid-cols-[220px_repeat(7,_1fr)]">
@@ -32,7 +35,7 @@ const CalendarRow: React.FC<Props> = ({
           "sticky left-0 z-20 flex shrink-0 items-center border-b border-r bg-[#f9f9f9] px-5"
         )}
       >
-        {!isUnassigned && <UserCard data={userInfo} />}
+        <UserCard data={userInfo} />
       </div>
       {calendar.map(date => {
         const calendarDate = `${date.year}-${date.month}-${date.day}`
@@ -44,7 +47,7 @@ const CalendarRow: React.FC<Props> = ({
           <Droppable
             key={`${userInfo.id}/${calendarDate}`}
             id={`${userInfo.id}/${calendarDate}`}
-            className={"flex min-w-[240px] flex-col gap-2 border-b border-r p-4"}
+            className={"flex min-w-[240px] flex-col gap-2 border-b border-r p-4 transition"}
           >
             {userShifts.map(shift => {
               if (shift.shiftVariant !== ShiftVariant.SHIFT) {
@@ -70,6 +73,14 @@ const CalendarRow: React.FC<Props> = ({
                 </Draggable>
               )
             })}
+            <div
+              className={cn(
+                "flex h-full w-full cursor-pointer items-center justify-center overflow-hidden rounded-[10px] text-color-gray opacity-0 transition hover:bg-color-light-gray hover:opacity-40"
+              )}
+              onClick={() => handleAddClick(calendarDate)}
+            >
+              <FaCalendarPlus />
+            </div>
           </Droppable>
         )
       })}

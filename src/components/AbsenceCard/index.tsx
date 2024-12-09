@@ -33,7 +33,7 @@ const AbsenceCard: React.FC<Props> = ({ data, salary, currency, setIsModalOpen }
     <>
       <div
         onContextMenu={e => handleRightClick(e, id)}
-        className={`relative z-0 flex h-max w-full cursor-grab flex-col overflow-hidden rounded-[10px] bg-transparent px-4  py-2 shadow`}
+        className={`relative z-0 flex h-max w-full cursor-grab flex-col overflow-hidden rounded-[10px] bg-transparent px-4 py-2 shadow transition hover:scale-105`}
       >
         {/*card background*/}
         <div className="absolute left-[-20px] top-[-20px] z-[-1] flex h-[150%] w-[120%] justify-between gap-3 bg-[#f9faff]">

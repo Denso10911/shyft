@@ -33,7 +33,7 @@ export const selectStyles = {
   control: (baseStyles: CSSObjectWithLabel) => ({
     ...baseStyles,
     border: "none",
-    height: "40px",
+    minHeight: "40px",
     borderRadius: "2px",
     fontSize: "14px",
     cursor: "pointer",
@@ -42,32 +42,20 @@ export const selectStyles = {
     ":active": {
       border: "none",
     },
-    "&::-webkit-scrollbar": {
-      width: "8px", // Установите желаемую ширину ползунка
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#e9e9ea", // Замените "desired-color" на желаемый цвет ползунка
-      borderRadius: "8px", // Установите радиус скругления
-    },
   }),
   option: (baseStyles: CSSObjectWithLabel, state: any) => ({
     ...baseStyles,
     backgroundColor: state.isSelected ? "#F4F4F5" : state.isFocused ? "#F4F4F5" : "white",
     color: state.isFocused ? "black" : "inherit",
     cursor: "pointer",
-    "&::-webkit-scrollbar": {
-      width: "8px", // Установите желаемую ширину ползунка
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#e9e9ea", // Замените "desired-color" на желаемый цвет ползунка
-      borderRadius: "8px", // Установите радиус скругления
-    },
     ":active": {
       ...baseStyles[":active"],
       backgroundColor: state.isSelected ? "#e9e9ea" : "F4F4F5",
     },
   }),
-
+  indicatorSeparator: () => ({
+    display: "none",
+  }),
   placeholder: (provided: CSSObjectWithLabel) => ({
     ...provided,
     color: "#a0a0ae",

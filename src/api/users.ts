@@ -5,11 +5,17 @@ import { mockUsersData } from "@/utiles/dummyContents"
 
 export const usersApi = {
   getUsers: async () => {
+    console.log("start request")
+
     if (process.env.NEXT_PUBLIC_USE_MOCK === "true") {
       return mockUsersData
     }
-
     const response = await fetch(`${BASE_URL}/users`)
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`)
+    }
+
     return response.json()
   },
 }

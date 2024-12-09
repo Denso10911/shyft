@@ -87,5 +87,10 @@
       "create": "Create new shift",
       "edit": "Edit shift"
     }
+  },
+
+  "CalendarMenu": {
+    "week": "Week",
+    "plus": "Plus"
   }
 }

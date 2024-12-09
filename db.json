@@ -64,7 +64,7 @@
     },
     {
       "shiftType": 5,
-      "userId": "1",
+      "userId": "2",
       "competencies": [
         "Competency 2"
       ],
@@ -74,26 +74,26 @@
       "breakPaid": null,
       "breakUnpaid": 30,
       "specialCode": "specialCode",
-      "isShiftCompensated": true,
+      "isShiftCompensated": false,
       "shiftVariant": 0,
       "shiftLength": 120,
       "id": "2",
-      "date": "2024-12-10"
+      "date": "2024-12-09"
     },
     {
-      "id": "cf6c5fd0-b597-11ef-8d4c-87336e263e81",
       "shiftType": 5,
-      "userId": "3",
+      "userId": "2",
       "competencies": [],
       "attributes": [],
       "start": "10:00",
-      "end": "15:00",
+      "end": "08:00",
       "breakPaid": null,
       "breakUnpaid": 30,
       "specialCode": "specialCode",
       "isShiftCompensated": true,
       "shiftVariant": 0,
-      "shiftLength": 300,
+      "shiftLength": 1320,
+      "id": "cf6c5fd0-b597-11ef-8d4c-87336e263e81",
       "date": "2024-12-09"
     },
     {
@@ -112,6 +112,26 @@
       "shiftVariant": 0,
       "shiftLength": 60,
       "id": "40f9ef70-b5be-11ef-8358-05bf5a37e092",
+      "date": "2024-12-10"
+    },
+    {
+      "id": "ede79a80-b667-11ef-94cf-2d63402d33cf",
+      "shiftType": 1,
+      "userId": "2",
+      "competencies": [
+        "Competency 2"
+      ],
+      "attributes": [
+        "Attribute 3"
+      ],
+      "start": "14:00",
+      "end": "22:00",
+      "breakPaid": null,
+      "breakUnpaid": null,
+      "specialCode": null,
+      "isShiftCompensated": false,
+      "shiftVariant": 0,
+      "shiftLength": 480,
       "date": "2024-12-10"
     }
   ]

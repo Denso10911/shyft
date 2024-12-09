@@ -56,7 +56,6 @@ const ShiftFormInputs: React.FC<Props> = ({
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
-              isClearable
               placeholder={t("placeholders.section")}
               styles={selectStyles}
               options={shiftOptionsByShiftVariant}
@@ -78,7 +77,6 @@ const ShiftFormInputs: React.FC<Props> = ({
           }}
           render={({ field: { onChange, value } }) => (
             <Select
-              isClearable
               placeholder={t("placeholders.user")}
               styles={selectStyles}
               options={mockUserOptions}
@@ -132,7 +130,7 @@ const ShiftFormInputs: React.FC<Props> = ({
         />
       </InputLabelWrapper>
 
-      <div className="flex gap-2">
+      <div className="grid max-w-full shrink-0 grid-cols-[90px_90px_1fr] gap-2">
         <InputLabelWrapper
           label={t("labels.start")}
           error={errors?.start?.message}
@@ -178,7 +176,7 @@ const ShiftFormInputs: React.FC<Props> = ({
           />
         </InputLabelWrapper>
 
-        <InputLabelWrapper label={t("labels.templates")} className="w-full">
+        <InputLabelWrapper label={t("labels.templates")} className="max-w-[200px]">
           <Select
             placeholder={t("placeholders.shortcuts")}
             styles={selectStyles}

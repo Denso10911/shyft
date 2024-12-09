@@ -11,7 +11,8 @@ const useCalendarShiftContextMenu = () => {
   })
 
   const handleRightClick = (event: React.MouseEvent, id: string) => {
-    event.preventDefault() // Відключаємо стандартне меню браузера
+    event.preventDefault()
+    event.stopPropagation()
     setContextMenu({
       visible: true,
       x: event.pageX,
