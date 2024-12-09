@@ -2,6 +2,7 @@ import React from "react"
 import { FaPlus } from "react-icons/fa"
 import cn from "classnames"
 import dayjs from "dayjs"
+import { useLocale } from "next-intl"
 
 import { useCalendarStore } from "@/store/calendarStore"
 import { useShiftStore } from "@/store/shiftStore"
@@ -12,6 +13,7 @@ type Props = {
 }
 
 const CalendarHeader: React.FC<Props> = ({ setIsModalOpen }) => {
+  const locale = useLocale()
   const { setSelectedDate, setShiftModalType } = useShiftStore(state => state)
   const calendar = useCalendarStore(state => state.calendar)
 
@@ -33,7 +35,7 @@ const CalendarHeader: React.FC<Props> = ({ setIsModalOpen }) => {
       {calendar.length > 0 &&
         calendar.map((el, i) => {
           const calendarDate = `${el.year}-${el.month}-${el.day}`
-          const dayOfWeek = dayjs(calendarDate).format("ddd")
+          const dayOfWeek = dayjs(calendarDate).locale(locale).format("ddd")
           const isToday = dayjs(calendarDate).isSame(dayjs(), "day") // Check if the date is today
 
           return (

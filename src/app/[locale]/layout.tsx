@@ -1,4 +1,3 @@
-import dayjs from "dayjs"
 import localFont from "next/font/local"
 import { notFound } from "next/navigation"
 import { NextIntlClientProvider } from "next-intl"
@@ -38,8 +37,6 @@ export default async function LocaleLayout({
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages()
-
-  dayjs.locale(locale)
 
   return (
     <html lang={locale}>

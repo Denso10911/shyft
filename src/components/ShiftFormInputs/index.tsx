@@ -57,6 +57,7 @@ const ShiftFormInputs: React.FC<Props> = ({
           render={({ field: { onChange, value } }) => (
             <Select
               isClearable
+              placeholder={t("placeholders.section")}
               styles={selectStyles}
               options={shiftOptionsByShiftVariant}
               onChange={selectedOption => {
@@ -75,6 +76,7 @@ const ShiftFormInputs: React.FC<Props> = ({
           render={({ field: { onChange, value } }) => (
             <Select
               isClearable
+              placeholder={t("placeholders.user")}
               styles={selectStyles}
               options={mockUserOptions}
               onChange={selectedOption => {
@@ -95,6 +97,7 @@ const ShiftFormInputs: React.FC<Props> = ({
           control={control}
           render={({ field }) => (
             <Select
+              placeholder={t("placeholders.competencies")}
               styles={selectStyles}
               isMulti
               options={competenciesOptions}
@@ -113,6 +116,7 @@ const ShiftFormInputs: React.FC<Props> = ({
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
+              placeholder={t("placeholders.attributes")}
               styles={selectStyles}
               isMulti
               options={attributesOptions}
@@ -173,6 +177,7 @@ const ShiftFormInputs: React.FC<Props> = ({
 
         <InputLabelWrapper label={t("labels.templates")} className="w-full">
           <Select
+            placeholder={t("placeholders.shortcuts")}
             styles={selectStyles}
             options={shiftTimingOptions}
             onChange={selectedOption => {
@@ -225,6 +230,7 @@ const ShiftFormInputs: React.FC<Props> = ({
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
+              placeholder={t("placeholders.specialCode")}
               isClearable
               styles={selectStyles}
               options={specialCodeOptions}

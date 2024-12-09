@@ -2,11 +2,14 @@ import React from "react"
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"
 import dayjs from "dayjs"
 import isoWeek from "dayjs/plugin/isoWeek"
+import { useLocale } from "next-intl"
 
 import { useCalendarStore } from "@/store/calendarStore"
 dayjs.extend(isoWeek)
 
 const CalendarMenu = () => {
+  const locale = useLocale()
+
   const { firstDate, lastDate, setNextWeek, setPrevWeek } = useCalendarStore(state => state)
 
   return (
@@ -17,7 +20,8 @@ const CalendarMenu = () => {
             <FaChevronLeft />
           </div>
           <div className="rounded border border-[#eae8ec] bg-[#f6f8fc] px-10 py-1 text-sm lowercase">
-            {dayjs(firstDate).format("DD MMM")} - {dayjs(lastDate).format("DD MMM")}
+            {dayjs(firstDate).locale(locale).format("DD MMM")} -{" "}
+            {dayjs(lastDate).locale(locale).format("DD MMM")}
           </div>
           <div className="cursor-pointer" onClick={() => setNextWeek()}>
             <FaChevronRight />

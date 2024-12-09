@@ -64,7 +64,14 @@
       "addShift": "Add shift",
       "editShift": "Edit shift"
     },
-    "placeholders": {},
+    "placeholders": {
+      "section": "Choose a section",
+      "competencies": "Select one or more competencies",
+      "attributes": "Select one or more attributes",
+      "specialCode": "Special HR code",
+      "user": "Select a user",
+      "shortcuts": "Select shortcuts"
+    },
     "validation": {}
   },
 
