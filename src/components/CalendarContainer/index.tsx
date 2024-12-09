@@ -17,14 +17,9 @@ import { updateShiftPayloadType } from "@/api/types"
 import { getUsersOptions } from "@/api/users"
 import useCalendarShiftSensors from "@/hooks/useCalendarShiftSensors"
 import { fullUserInfoInterface, shiftInterface, userInterface } from "@/types"
-import { DateNumberT } from "@/types/calendar"
 dayjs.extend(weekday)
 
-interface Props {
-  calendar: DateNumberT[]
-}
-
-const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
+const CalendarContainer = () => {
   const t = useTranslations("EmployeesCalendar")
   const queryClient = useQueryClient()
 
@@ -140,10 +135,9 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
           sensors={sensors}
           modifiers={[restrictToFirstScrollableAncestor, restrictToWindowEdges]}
         >
-          <CalendarHeader calendar={calendar} setIsModalOpen={setIsModalOpen} />
+          <CalendarHeader setIsModalOpen={setIsModalOpen} />
 
           <CalendarBody
-            calendar={calendar}
             unassignedShifts={unassignedShifts}
             usersListWithShifts={usersListWithShifts}
             setIsModalOpen={setIsModalOpen}
@@ -155,4 +149,4 @@ const EmployeesCalendar: React.FC<Props> = ({ calendar }) => {
     </>
   )
 }
-export default EmployeesCalendar
+export default CalendarContainer

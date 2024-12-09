@@ -8,23 +8,23 @@ import Droppable from "@/components/Droppable"
 import ShiftCard from "@/components/ShiftCard"
 import UserCard from "@/components/UserCard"
 
+import { useCalendarStore } from "@/store/calendarStore"
 import { fullUserInfoInterface } from "@/types"
-import { DateNumberT } from "@/types/calendar"
 import { ShiftVariant } from "@/types/enums"
 
 type Props = {
   user: fullUserInfoInterface
-  calendar: DateNumberT[]
   isUnassigned?: boolean
   setIsModalOpen: (value: boolean) => void
 }
 
 const CalendarRow: React.FC<Props> = ({
   user: { shifts, ...userInfo },
-  calendar,
   isUnassigned,
   setIsModalOpen,
 }) => {
+  const calendar = useCalendarStore(state => state.calendar)
+
   return (
     <div className="grid min-h-[130px] min-w-[240px] shrink-0 grid-cols-[220px_repeat(7,_1fr)]">
       <div

@@ -45,8 +45,12 @@
     {
       "shiftType": 2,
       "userId": "2",
-      "competencies": ["Competency 1"],
-      "attributes": ["Attribute 1"],
+      "competencies": [
+        "Competency 1"
+      ],
+      "attributes": [
+        "Attribute 1"
+      ],
       "start": "11:00",
       "end": "19:00",
       "breakPaid": null,
@@ -93,7 +97,9 @@
     {
       "shiftType": 4,
       "userId": "3",
-      "competencies": ["Competency 2"],
+      "competencies": [
+        "Competency 2"
+      ],
       "attributes": [],
       "start": "02:00",
       "end": "03:00",
@@ -105,6 +111,22 @@
       "shiftLength": 60,
       "id": "40f9ef70-b5be-11ef-8358-05bf5a37e092",
       "date": "2024-12-10"
+    },
+    {
+      "id": "6aaabfc0-b5c3-11ef-a68c-139005f299bd",
+      "shiftType": null,
+      "userId": "1",
+      "competencies": [],
+      "attributes": [],
+      "start": "00:00",
+      "end": "00:00",
+      "breakPaid": null,
+      "breakUnpaid": null,
+      "specialCode": null,
+      "isShiftCompensated": false,
+      "shiftVariant": 0,
+      "shiftLength": 0,
+      "date": "2024-12-11"
     }
   ]
 }

@@ -3,17 +3,17 @@ import { FaPlus } from "react-icons/fa"
 import cn from "classnames"
 import dayjs from "dayjs"
 
+import { useCalendarStore } from "@/store/calendarStore"
 import { useShiftStore } from "@/store/shiftStore"
-import { DateNumberT } from "@/types/calendar"
 import { ShiftModalTypes } from "@/types/enums"
 
 type Props = {
-  calendar: DateNumberT[]
   setIsModalOpen: (value: boolean) => void
 }
 
-const CalendarHeader: React.FC<Props> = ({ calendar, setIsModalOpen }) => {
+const CalendarHeader: React.FC<Props> = ({ setIsModalOpen }) => {
   const { setSelectedDate, setShiftModalType } = useShiftStore(state => state)
+  const calendar = useCalendarStore(state => state.calendar)
 
   const handleCreateClick = (date: string) => {
     setSelectedDate(date)
