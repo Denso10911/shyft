@@ -27,11 +27,9 @@ const CalendarHeader: React.FC<Props> = ({ setIsModalOpen }) => {
     <div className="relative grid grid-cols-[220px_repeat(7,_1fr)]">
       <div
         className={cn(
-          "sticky left-0 z-20 flex items-center justify-center border bg-[#f9f9f9] py-4 "
+          "sticky left-0 z-20 flex items-center justify-center border bg-[#f9f9f9] py-4"
         )}
-      >
-        <div className="sticky left-0 w-full px-4">Search</div>
-      </div>
+      />
       {calendar.length > 0 &&
         calendar.map((el, i) => {
           const calendarDate = `${el.year}-${el.month}-${el.day}`
@@ -41,7 +39,7 @@ const CalendarHeader: React.FC<Props> = ({ setIsModalOpen }) => {
           return (
             <div
               className={cn(
-                "d group relative flex min-w-[240px] shrink-0 cursor-pointer flex-col items-center justify-center border-b border-r border-t transition ",
+                "group relative flex min-w-[240px] shrink-0 cursor-pointer flex-col items-center justify-center border-b border-r border-t py-4 transition ",
                 isToday ? "bg-[#e3e6f1]" : "bg-[#f9f9f9]"
               )}
               key={i}
