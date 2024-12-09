@@ -5,6 +5,8 @@ import { getMessages } from "next-intl/server"
 
 import Providers from "@/app/[locale]/proviers"
 
+import Header from "@/components/Header"
+
 import "../../styles/globals.css"
 import "react-toastify/dist/ReactToastify.css"
 
@@ -38,7 +40,10 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Providers>
-          <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+          <NextIntlClientProvider messages={messages}>
+            <Header />
+            {children}
+          </NextIntlClientProvider>
         </Providers>
       </body>
     </html>

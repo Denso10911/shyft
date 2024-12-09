@@ -80,7 +80,16 @@ const Components = () => {
         <div className="flex flex-col gap-2 rounded-[20px] border p-4">
           <div className="grid grid-cols-4 gap-1">
             {mockUsersData.map((data, index) => {
-              return <UserCard key={index} data={data} />
+              return (
+                <UserCard
+                  key={index}
+                  role={data.role}
+                  hoursWorked={data.hoursWorked}
+                  profileImage={data.profileImage}
+                  lastName={data.lastName}
+                  firstName={data.firstName}
+                />
+              )
             })}
           </div>
         </div>

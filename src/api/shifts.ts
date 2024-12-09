@@ -75,4 +75,5 @@ export const getShiftsOptions = () =>
     queryFn: async () => {
       return await shiftsApi.getShifts()
     },
+    refetchOnMount: false,
   })

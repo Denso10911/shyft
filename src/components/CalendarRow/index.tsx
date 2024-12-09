@@ -12,7 +12,7 @@ import UserCard from "@/components/UserCard"
 import { useCalendarStore } from "@/store/calendarStore"
 import { useShiftStore } from "@/store/shiftStore"
 import { fullUserInfoInterface } from "@/types"
-import { ShiftVariant } from "@/types/enums"
+import { ShiftModalTypes, ShiftVariant } from "@/types/enums"
 type Props = {
   user: fullUserInfoInterface
   setIsModalOpen: (value: boolean) => void
@@ -20,11 +20,12 @@ type Props = {
 
 const CalendarRow: React.FC<Props> = ({ user: { shifts, ...userInfo }, setIsModalOpen }) => {
   const calendar = useCalendarStore(state => state.calendar)
-  const { setSelectedDate, setSelectedUser } = useShiftStore(state => state)
+  const { setSelectedDate, setSelectedUser, setShiftModalType } = useShiftStore(state => state)
 
   const handleAddClick = (calendarDate: string) => {
     setSelectedDate(calendarDate)
     setSelectedUser(userInfo.id)
+    setShiftModalType(ShiftModalTypes.CREATE)
     setIsModalOpen(true)
   }
 
@@ -35,7 +36,13 @@ const CalendarRow: React.FC<Props> = ({ user: { shifts, ...userInfo }, setIsModa
           "sticky left-0 z-20 flex shrink-0 items-center border-b border-r bg-[#f9f9f9] px-5"
         )}
       >
-        <UserCard data={userInfo} />
+        <UserCard
+          role={userInfo.role}
+          hoursWorked={userInfo.hoursWorked}
+          profileImage={userInfo.profileImage}
+          lastName={userInfo.lastName}
+          firstName={userInfo.firstName}
+        />
       </div>
       {calendar.map(date => {
         const calendarDate = `${date.year}-${date.month}-${date.day}`

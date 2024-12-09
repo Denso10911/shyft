@@ -26,6 +26,7 @@ type Props = {
   width: "full" | "max"
   onClick?: () => void
   children: React.ReactNode
+  className?: string
 }
 
 const Button: React.FC<Props> = ({
@@ -36,6 +37,7 @@ const Button: React.FC<Props> = ({
   onClick,
   rounded,
   children,
+  className,
 }) => {
   return (
     <button
@@ -43,6 +45,7 @@ const Button: React.FC<Props> = ({
       onClick={onClick}
       className={cn(
         "block cursor-pointer font-medium",
+        className,
         variantStyles[variant],
         sizeStyles[size],
         widthStyles[width],

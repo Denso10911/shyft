@@ -29,8 +29,6 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
     state => state
   )
 
-  console.log(selectedDate, "selectedDate")
-
   const [exceedingHours, setExceedingHours] = useState(0)
   const [userData, setUserData] = useState<userInterface | null>(null)
 
@@ -102,7 +100,6 @@ const ShiftForm: React.FC<Props> = ({ closeHandler }) => {
 
   const onSubmit = (dataToSubmit: Omit<shiftInterface, "id" | "date">) => {
     const shiftDate = selectedShift ? selectedShift.date : selectedDate
-    console.log(shiftDate, "shiftDate")
 
     const shiftStartMinutes = getHHmmToMinutes(dataToSubmit.start)
     const shiftEndMinutes = getHHmmToMinutes(dataToSubmit.end)

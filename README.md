@@ -15,6 +15,7 @@ Before you get started, ensure you have the following installed:
 
 - Node.js (version 20 or later)
 - npm package manager
+
 ## Installation
 
 To install and set up the project, follow these steps:
@@ -37,7 +38,6 @@ To install and set up the project, follow these steps:
    npm install
    ```
 
-
 ## Usage
 
 ### Development
@@ -56,15 +56,13 @@ To install and set up the project, follow these steps:
 
 This will start the development server. Open your browser and go to `http://localhost:3000`.
 
-
-
 ### Mock Development
 
 To run the development server with mock local data:
 
-   ```bash
-   npm run dev-mock
-   ```
+```bash
+npm run dev-mock
+```
 
 ## Key Technologies
 

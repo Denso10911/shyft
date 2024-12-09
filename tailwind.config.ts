@@ -19,6 +19,7 @@ export default {
         "color-gray": "#a0a0ae",
         "color-red": "#e52261",
         "color-green": "#8cc44c",
+        "color-dark-green": "#24b552",
         "color-yellow": "#fd9901",
         "color-light-yellow": "#fed097",
         "color-light-gray": "#f4f4f5",
